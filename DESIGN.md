@@ -12,10 +12,12 @@ Core Design Principles
 
 Colors and fonts
 
-- Primary Color: #1E88E5 (Blue)
-- Secondary Color: #FFC107 (Yellow)
-- Background Color: #F5F5F5 (Light Gray)
-- Text Color: #333333 (Dark Gray)
+- Primary Color: #005377 (Blue)
+- Secondary Color: #06A77D (Green)
+- Third Color: #052F5F (Dark blue)
+- Background Color: #D5C67A (Yellow)
+- Text Color on light colors: #333333 (Dark Gray)
+- Text Color on dark colors: #FFFFFF (White)
 - Accent Color: #D32F2F (Red for warnings and alerts)
 
 - Primary font: Inter
