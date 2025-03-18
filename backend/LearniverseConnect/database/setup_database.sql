@@ -2,14 +2,14 @@
 -- Run with the following command: psql -U postgres -f setup_database.sql
 
 -- Step 1: Create the database (if it doesn't already exist)
-CREATE DATABASE learniverse;
+CREATE DATABASE IF NOT EXISTS learniverse;
 
 -- Step 2: Create a user (if it doesn't exist) with a secure password
 DO
 $$
 BEGIN
     IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'learniverse_user') THEN
-        CREATE USER learniverse_user WITH PASSWORD 'your_secure_password';
+        CREATE USER learniverse_user WITH PASSWORD 'password';
     END IF;
 END
 $$;

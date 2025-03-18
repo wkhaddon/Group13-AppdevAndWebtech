@@ -13,6 +13,7 @@ public class LearniverseConnectApplication {
 
     // TODO: Find a better way to set environment variables
     // This assumes that .env is correctly loaded and contains the necessary variables
+    System.setProperty("DB_URL", dotenv.get("DB_URL"));
     System.setProperty("DB_USERNAME", dotenv.get("DB_USERNAME"));
     System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
 
