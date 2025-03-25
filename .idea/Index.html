@@ -5,18 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Marketplace</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="index.js" defer></script>
 </head>
 <body>
 <header>
     <nav>
         <h1 class="logo">Learniverse Connect</h1>
-        <ul>
-            <li><a href="#features">Features</a></li>
-            <li><a href="#courses">Courses</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li><a href="#login" class="login-link">Login</a></li>
-        </ul>
+        <button onclick="setSection('features')">Features</button>
+        <button onclick="setSection('courses')">Courses</button>
+        <button onclick="setSection('about')">About</button>
+        <button onclick="setSection('contact')">Contact</button>
+        <button onclick="setSection(4)" class="login-link">Login</button>
     </nav>
 </header>
 
@@ -40,6 +39,15 @@
             <h2>Affordable Prices</h2>
             <p>Access high-quality courses at an affordable cost.</p>
         </article>
+    </section>
+    <section id="courses">
+        <h1>Courses</h1>
+    </section>
+    <section id="about">
+        <h1>About</h1>
+    </section>
+    <section id="contact">
+        <h1>Contact</h1>
     </section>
 </main>
 
