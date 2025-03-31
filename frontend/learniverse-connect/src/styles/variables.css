@@ -13,13 +13,13 @@
 	/* Button colors */
 	--button-bg: #052F5F;
 	--button-text: white;
-	--button-hover-bg: #e63e75;
+	--button-hover-bg: #043a79;
 
 	/* Login button */
 	--login-bg: #06A77D;
 	--login-text: white;
 	--login-border: #06A77D;
-	--login-hover-bg: #eaeaea;
+	--login-hover-bg: #0cd39e;
 
 	/* Other */
 	--border-radius: 6px;

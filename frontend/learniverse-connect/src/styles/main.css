@@ -1,84 +1,174 @@
 @import './variables.css';
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
-body {
-    font-family: var(--font-family);
-    background-color: var(--background-color);
-    color: var(--text-color);
-    line-height: 1.6;
-    padding: 1rem;
+html, body {
+	font-family: 'Inter', sans-serif;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	background-color: var(--background-color);
+	color: var(--text-color);
+	display: flex;
+	flex-direction: column;
 
-    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+	transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+
+#root {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+main {
+	flex-grow: 1;
 }
 
 .app-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
 }
 
 .header {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+	background-color: var(--primary-color);
+	color: white;
+	padding: 1rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	position: sticky;
+	top: 0;
+	z-index: 1000;
 }
 
 .nav-buttons {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
+	display: flex;
+	gap: 1rem;
+	flex-wrap: wrap;
 }
 
-.nav-buttons button {
-    background-color: var(--button-bg);
-    color: var(--button-text);
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: background-color var(--transition-speed) ease;
+.nav-buttons a {
+	background-color: var(--button-bg);
+	color: var(--button-text);
+	border: none;
+	padding: 0.5rem 1rem;
+	border-radius: var(--border-radius);
+	cursor: pointer;
+	text-decoration: none;
+	transition: background-color var(--transition-speed) ease;
 }
 
-.nav-buttons button:hover {
-    background-color: var(--button-hover-bg);
+.nav-buttons a:hover {
+	background-color: var(--button-hover-bg);
 }
 
 .nav-buttons .login-btn {
-    background-color: var(--login-bg);
-    color: var(--login-text);
-    border: 1px solid var(--login-border);
+	background-color: var(--login-bg);
+	color: var(--login-text);
+	border: 1px solid var(--login-border);
 }
 
 .nav-buttons .login-btn:hover {
-    background-color: var(--login-hover-bg);
+	background-color: var(--login-hover-bg);
 }
 
 .main-content {
-    flex: 1;
-    padding: 1.5rem;
+	flex: 1;
+	padding: 1.5rem;
+}
+
+footer {
+	text-align: center;
+	padding: 20px;
+	background-color: var(--primary-color);
+	color: white;
+	margin-top: auto;
+}
+
+.hero {
+    text-align: center;
+    padding: 100px 20px;
+    background-color: #005377;
+    color: white;
+}
+
+.hero h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.cta-button {
+    background-color: #06A77D;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #048B66;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    padding: 50px 20px;
+    text-align: center;
+	background-color: var(--tertiary-color);
+}
+
+.feature {
+    background: #e1f2e6;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature h2 {
+    font-size: 20px;
+    color: #052F5F;
+    margin-bottom: 15px;
+}
+
+.feature p {
+    font-size: 16px;
+    color: #555;
+}
+
+.feature:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-    .header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+	.header {
+		flex-direction: column;
+		align-items: flex-start;
+	}
 
-    .header nav {
-        margin-top: 0.5rem;
-    }
+	.header nav {
+		margin-top: 0.5rem;
+	}
 
-    .header nav button {
-        margin-left: 0;
-        margin-right: 1rem;
-    }
+	.header nav button {
+		margin-left: 0;
+		margin-right: 1rem;
+	}
 }

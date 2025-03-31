@@ -1,14 +1,34 @@
+import { Routes, Route, useLocation } from 'react-router-dom';
+
 import Header from './components/Header';
+import Footer from './components/Footer';
+import Hero from './components/Hero';
+import Features from './components/Features';
+
+import Courses from './pages/Courses';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import Login from './pages/Login';
 
 function App() {
+    const location = useLocation();
+    const showHero = location.pathname === '/';
+
     return (
-        <div className="App">
+        <>
             <Header />
-            <main className="main-content">
-                <h1>Welcome to Learniverse Connect</h1>
-                <p>This is the main content area.</p>
-            </main>
-        </div>
+            {showHero && <Hero />}
+
+            <Routes>
+                <Route path='/' element={<Features />} />
+                <Route path='/courses' element={<Courses />} />
+                <Route path='/about' element={<About />} />
+                <Route path='/contact' element={<Contact />} />
+                <Route path='/login' element={<Login />} />
+            </Routes>
+
+            <Footer />
+        </>
     );
 }
 

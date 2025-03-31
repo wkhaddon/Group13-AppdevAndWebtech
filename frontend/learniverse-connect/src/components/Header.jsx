@@ -1,13 +1,15 @@
+import { Link } from 'react-router-dom';
+
 function Header() {
     return (
         <header className="header">
             <h2>Learniverse Connect</h2>
             <nav className="nav-buttons">
-                <button>Features</button>
-                <button>Courses</button>
-                <button>About</button>
-                <button>Contact</button>
-                <button className="login-btn">Login</button>
+                <Link to='/'>Features</Link>
+                <Link to='/courses'>Courses</Link>
+                <Link to='/about'>About</Link>
+                <Link to='/contact'>Contact</Link>
+                <Link to='/login' className="login-btn">Login</Link>
             </nav>
         </header>
     );
