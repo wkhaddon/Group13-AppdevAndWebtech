@@ -1,7 +1,48 @@
 :root {
-    --primary-color: #004aad;
-    --accent-color: #ff4081;
-    --background-color: #f0f0f0;
-    --text-color: #333333;
-    --font-family: 'Segoe UI', sans-serif;
+	/* Core theme colors */
+	--primary-color: #004aad;
+	--accent-color: #06a77d;
+	--tertiary-color: #d6c67a;
+	--background-color: #9097ff;
+	--text-color: #333333;
+
+	/* Font */
+	--font-family: 'Segoe UI', sans-serif;
+	--text-color: black;
+
+	/* Button colors */
+	--button-bg: #052F5F;
+	--button-text: white;
+	--button-hover-bg: #e63e75;
+
+	/* Login button */
+	--login-bg: #06A77D;
+	--login-text: white;
+	--login-border: #06A77D;
+	--login-hover-bg: #eaeaea;
+
+	/* Other */
+	--border-radius: 6px;
+	--transition-speed: 0.3s;
 }
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+	:root {
+		--background-color: #101622; /* deep navy blue tint */
+		--text-color: #e0e6f0;       /* soft light gray-blue */
+		--primary-color: #004aad;    /* vibrant, readable blue */
+		--accent-color: #06a77d;     /* bright teal */
+		--tertiary-color: #d6c67a;
+
+		--button-bg: #1a1f2b; /* bluish-gray button bg */
+		--button-text: white;
+		--button-hover-bg: #283553;
+
+		--login-bg: #06A77D;         /* bluish-gray login button bg */
+		--login-text: white;
+		--login-border: #06A77D;
+		--login-hover-bg: #0cd39e;
+	}
+}
+  

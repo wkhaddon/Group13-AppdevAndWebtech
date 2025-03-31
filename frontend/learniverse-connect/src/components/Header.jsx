@@ -2,12 +2,12 @@ function Header() {
     return (
         <header className="header">
             <h2>Learniverse Connect</h2>
-            <nav>
-                <a href='#'>Features</a>
-                <a href='#'>Courses</a>
-                <a href='#'>About</a>
-                <a href='#'>Contact</a>
-                <a href='#'>Login</a>
+            <nav className="nav-buttons">
+                <button>Features</button>
+                <button>Courses</button>
+                <button>About</button>
+                <button>Contact</button>
+                <button className="login-btn">Login</button>
             </nav>
         </header>
     );
