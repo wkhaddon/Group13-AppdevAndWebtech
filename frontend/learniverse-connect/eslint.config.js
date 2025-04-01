@@ -28,6 +28,13 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
+
+      eqeqeq: ['error', 'always'],
+      'no-var': 'error',
+      'prefer-const': 'warn',
+      'no-console': 'warn',
+      curly: 'error',
+      'no-implicit-coercion': 'error',
     },
   },
 ]

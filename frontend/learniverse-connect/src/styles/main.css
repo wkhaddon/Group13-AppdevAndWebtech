@@ -95,7 +95,7 @@ footer {
 .hero {
     text-align: center;
     padding: 100px 20px;
-    background-color: #005377;
+    background-color: var(--background-color);
     color: white;
 }
 
@@ -133,7 +133,7 @@ footer {
 }
 
 .feature {
-    background: #e1f2e6;
+    background: var(--background-color);
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
@@ -142,13 +142,13 @@ footer {
 
 .feature h2 {
     font-size: 20px;
-    color: #052F5F;
+    color: var(--primary-color);
     margin-bottom: 15px;
 }
 
 .feature p {
     font-size: 16px;
-    color: #555;
+    color:  var(--text-color);
 }
 
 .feature:hover {
