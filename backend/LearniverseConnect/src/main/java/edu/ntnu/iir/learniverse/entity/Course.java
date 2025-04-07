@@ -1,34 +1,32 @@
 package edu.ntnu.iir.learniverse.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "courses")
 public class Course {
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Long courseId;
 
+  @Column(nullable = false)
   private String title;
 
-  @Column(length = 1000)
+  @Column(columnDefinition = "TEXT", nullable=false)
   private String description;
 
-  private String level;
-  private String keywords;
-  private double ectsCredits;
-  private int hoursPerWeek;
+  @Enumerated(EnumType.STRING)
+  private CourseLevel level;
 
-  private LocalDate closestSession;
+  private BigDecimal ectsCredits;
+  private BigDecimal hoursPerWeek;
+
+  private LocalDate sessionStartDate;
+  private LocalDate sessionEndDate;
 
   private String relatedCertification;
 
@@ -36,6 +34,12 @@ public class Course {
   @JoinColumn(name = "category_id", nullable = false)
   private Category category;
 
-  @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-  private List<CourseProvider> courseProviders;
+  @OneToMany(mappedBy = "course")
+  private List<Favorite> favorites;
+
+  @OneToMany(mappedBy = "course")
+  private List<CourseProvider> providers;
+
+  @OneToMany(mappedBy = "course")
+  private List<OrderCourse> orderCourses;
 }

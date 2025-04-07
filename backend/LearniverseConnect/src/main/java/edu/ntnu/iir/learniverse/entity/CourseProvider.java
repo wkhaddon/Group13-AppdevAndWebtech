@@ -1,28 +1,26 @@
 package edu.ntnu.iir.learniverse.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import jakarta.persistence.*;
 
-@Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class CourseProvider {
+import java.math.BigDecimal;
 
+@Entity
+@Table(name = "course_providers")
+public class CourseProvider {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Long courseProviderId;
 
   @ManyToOne
   @JoinColumn(name = "course_id", nullable = false)
   private Course course;
 
-  @ManyToOne
-  @JoinColumn(name = "provider_id", nullable = false)
-  private Provider provider;
+  @Column(nullable = false)
+  private String providerName;
 
-  private double price;
+  @Column(nullable = false)
+  private BigDecimal price;
+
+  @Column(nullable = false)
+  private String currency;
 }

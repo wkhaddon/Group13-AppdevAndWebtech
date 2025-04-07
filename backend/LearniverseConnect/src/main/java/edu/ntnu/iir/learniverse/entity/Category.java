@@ -1,24 +1,22 @@
 package edu.ntnu.iir.learniverse.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import jakarta.persistence.*;
+
 import java.util.List;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "categories")
 public class Category {
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Long categoryId;
 
+  @Column(nullable = false, unique = true)
   private String name;
 
-  @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+  @Column(columnDefinition = "TEXT")
+  private String description;
+
+  @OneToMany(mappedBy = "category")
   private List<Course> courses;
 }
