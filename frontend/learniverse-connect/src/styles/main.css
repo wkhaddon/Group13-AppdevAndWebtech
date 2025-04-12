@@ -1,4 +1,4 @@
-@import './variables.css';
+@import 'variables.scss';
 
 * {
 	margin: 0;
@@ -6,7 +6,8 @@
 	box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
 	font-family: 'Inter', sans-serif;
 	height: 100%;
 	margin: 0;
@@ -16,7 +17,9 @@ html, body {
 	display: flex;
 	flex-direction: column;
 
-	transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+	transition:
+		background-color var(--transition-speed) ease,
+		color var(--transition-speed) ease;
 }
 
 #root {
@@ -93,67 +96,71 @@ footer {
 }
 
 .hero {
-    text-align: center;
-    padding: 100px 20px;
-    background-color: var(--background-color);
-    color: white;
+	text-align: center;
+	padding: 100px 20px;
+	background-color: var(--background-color);
+	color: white;
 }
 
 .hero h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
+	font-size: 24px;
+	margin-bottom: 10px;
 }
 
 .hero p {
-    font-size: 16px;
-    margin-bottom: 20px;
+	font-size: 16px;
+	margin-bottom: 20px;
 }
 
 .cta-button {
-    background-color: #06A77D;
-    color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+	background-color: #06a77d;
+	color: white;
+	padding: 10px 20px;
+	text-decoration: none;
+	border-radius: 5px;
+	font-size: 16px;
+	transition:
+		background-color 0.3s ease,
+		color 0.3s ease;
 }
 
 .cta-button:hover {
-    background-color: #048B66;
+	background-color: #048b66;
 }
 
 .features {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-    padding: 50px 20px;
-    text-align: center;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 30px;
+	padding: 50px 20px;
+	text-align: center;
 	background-color: var(--tertiary-color);
 }
 
 .feature {
-    background: var(--background-color);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+	background: var(--background-color);
+	padding: 30px;
+	border-radius: 10px;
+	box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+	transition:
+		transform 0.3s ease,
+		box-shadow 0.3s ease;
 }
 
 .feature h2 {
-    font-size: 20px;
-    color: var(--primary-color);
-    margin-bottom: 15px;
+	font-size: 20px;
+	color: var(--primary-color);
+	margin-bottom: 15px;
 }
 
 .feature p {
-    font-size: 16px;
-    color:  var(--text-color);
+	font-size: 16px;
+	color: var(--text-color);
 }
 
 .feature:hover {
-    transform: translateY(-10px);
-    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2);
+	transform: translateY(-10px);
+	box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Responsive */

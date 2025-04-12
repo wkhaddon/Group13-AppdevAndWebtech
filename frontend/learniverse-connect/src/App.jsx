@@ -11,25 +11,25 @@ import Contact from './pages/Contact';
 import Login from './pages/Login';
 
 function App() {
-    const location = useLocation();
-    const showHero = location.pathname === '/';
+	const location = useLocation();
+	const showHero = location.pathname === '/';
 
-    return (
-        <>
-            <Header />
-            {showHero && <Hero />}
+	return (
+		<>
+			<Header />
+			{showHero && <Hero />}
 
-            <Routes>
-                <Route path='/' element={<Features />} />
-                <Route path='/courses' element={<Courses />} />
-                <Route path='/about' element={<About />} />
-                <Route path='/contact' element={<Contact />} />
-                <Route path='/login' element={<Login />} />
-            </Routes>
+			<Routes>
+				<Route path="/" element={<Features />} />
+				<Route path="/courses" element={<Courses />} />
+				<Route path="/about" element={<About />} />
+				<Route path="/contact" element={<Contact />} />
+				<Route path="/login" element={<Login />} />
+			</Routes>
 
-            <Footer />
-        </>
-    );
+			<Footer />
+		</>
+	);
 }
 
 export default App;
