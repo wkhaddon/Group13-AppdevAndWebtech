@@ -1,32 +1,45 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
+
+import ProtectedRoute from './components/ProtectedRoute';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Hero from './components/Hero';
 
-import Features from './pages/Features';
+import Home from './pages/Home';
 import Courses from './pages/Courses';
+import Favorites from './pages/Favorites';
 import About from './pages/About';
-import Contact from './pages/Contact';
 
 import Login from './pages/Login';
+import Register from './pages/Register';
+
+import NotFound from './pages/NotFound';
 
 function App() {
-	const location = useLocation();
-	const showHero = location.pathname === '/';
-
 	return (
 		<>
 			<Header />
-			{showHero && <Hero />}
 
 			<main>
 				<Routes>
-					<Route path="/" element={<Features />} />
+					<Route path="/" element={<Home />} />
 					<Route path="/courses" element={<Courses />} />
+					<Route
+						path="/favorites"
+						element={
+							<ProtectedRoute>
+								<Favorites />
+							</ProtectedRoute>
+						}
+					/>
 					<Route path="/about" element={<About />} />
-					<Route path="/contact" element={<Contact />} />
+
+					{/* Authentication */}
 					<Route path="/login" element={<Login />} />
+					<Route path="/register" element={<Register />} />
+
+					{/* 404 Not Found */}
+					<Route path="*" element={<NotFound />} />
 				</Routes>
 			</main>
 

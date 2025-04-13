@@ -1,4 +1,4 @@
-@use "./_variables" as *;
+@use './_variables' as *;
 
 @mixin export-theme($map) {
 	@each $key, $value in $map {
@@ -15,8 +15,10 @@ $light-theme: (
 	text-secondary: $color-text-secondary-dark,
 	primary: $color-primary,
 	primary-hover: $color-primary-hover,
+	danger: $color-danger,
+	danger-hover: $color-danger-hover,
 	overlay: $color-overlay-light,
-	font: $font-sans
+	font: $font-sans,
 );
 
 $dark-theme: (
@@ -28,8 +30,10 @@ $dark-theme: (
 	text-secondary: $color-text-secondary-light,
 	primary: $color-primary,
 	primary-hover: $color-primary-hover,
+	danger: $color-danger,
+	danger-hover: $color-danger-hover,
 	overlay: $color-overlay-dark,
-	font: $font-sans
+	font: $font-sans,
 );
 
 :root {

@@ -1,4 +1,4 @@
-@use "./_variables" as *;
+@use './_variables' as *;
 
 @mixin flex-center {
 	display: flex;
@@ -25,10 +25,16 @@
 
 @mixin respond($breakpoint) {
 	@if $breakpoint == sm {
-		@media (max-width: 600px) { @content; }
+		@media (max-width: 600px) {
+			@content;
+		}
 	} @else if $breakpoint == md {
-		@media (max-width: 900px) { @content; }
+		@media (max-width: 900px) {
+			@content;
+		}
 	} @else if $breakpoint == lg {
-		@media (max-width: 1200px) { @content; }
+		@media (max-width: 1200px) {
+			@content;
+		}
 	}
 }

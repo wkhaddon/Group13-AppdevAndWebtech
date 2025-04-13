@@ -1,8 +1,11 @@
-@use "sass:color";
+@use 'sass:color';
 
 // COLOR TOKENS
 $color-primary: #5c7cfa;
 $color-primary-hover: color.adjust($color-primary, $lightness: -10%);
+
+$color-danger: #ff4d4f;
+$color-danger-hover: color.adjust($color-danger, $lightness: -10%);
 
 $color-bg-light: #fff;
 $color-bg-dark: #121212;

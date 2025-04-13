@@ -1,4 +1,4 @@
-@use "@/styles/main" as *;
+@use '@/styles/main' as *;
 
 .features {
 	@include grid(3, 30px);
@@ -38,5 +38,4 @@
 		outline: 2px solid var(--primary);
 		outline-offset: 2px;
 	}
-
 }
