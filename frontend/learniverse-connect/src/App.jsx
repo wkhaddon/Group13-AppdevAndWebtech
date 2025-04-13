@@ -4,7 +4,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Hero from './components/Hero';
 
-import Features from './pages/Features.jsx';
+import Features from './pages/Features';
 import Courses from './pages/Courses';
 import About from './pages/About';
 import Contact from './pages/Contact';
