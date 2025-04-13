@@ -1,0 +1,42 @@
+@use "@/styles/main" as *;
+
+.features {
+	@include grid(3, 30px);
+
+	padding: $spacing-md $spacing-md;
+	text-align: center;
+	background-color: var(--bg);
+}
+
+.feature {
+	@include card;
+
+	color: var(--text);
+	margin-bottom: clamp(var($spacing-md / 2));
+	transition:
+		transform 0.3s ease,
+		box-shadow 0.3s ease;
+
+	h2 {
+		font-size: 1.5rem;
+		color: var(--primary);
+		margin-bottom: 1rem;
+	}
+
+	p {
+		font-size: 1rem;
+		color: var(--text-color);
+	}
+
+	&:hover {
+		transform: translateY(-10px);
+		box-shadow: 0px 8px 12px var(--shadow);
+	}
+
+	&:focus-within,
+	&:focus {
+		outline: 2px solid var(--primary);
+		outline-offset: 2px;
+	}
+
+}

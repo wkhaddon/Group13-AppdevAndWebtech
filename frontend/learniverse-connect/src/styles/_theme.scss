@@ -1,0 +1,43 @@
+@use "./_variables" as *;
+
+@mixin export-theme($map) {
+	@each $key, $value in $map {
+		--#{$key}: #{$value};
+	}
+}
+
+$light-theme: (
+	bg: $color-bg-light,
+	surface: $color-surface-light,
+	surface-hover: $color-surface-hover-light,
+	shadow: $shadow-light,
+	text: $color-text-dark,
+	text-secondary: $color-text-secondary-dark,
+	primary: $color-primary,
+	primary-hover: $color-primary-hover,
+	overlay: $color-overlay-light,
+	font: $font-sans
+);
+
+$dark-theme: (
+	bg: $color-bg-dark,
+	surface: $color-surface-dark,
+	surface-hover: $color-surface-hover-dark,
+	shadow: $shadow-dark,
+	text: $color-text-light,
+	text-secondary: $color-text-secondary-light,
+	primary: $color-primary,
+	primary-hover: $color-primary-hover,
+	overlay: $color-overlay-dark,
+	font: $font-sans
+);
+
+:root {
+	@include export-theme($light-theme);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		@include export-theme($dark-theme);
+	}
+}

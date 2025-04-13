@@ -1,6 +1,8 @@
+import styles from './Footer.module.scss';
+
 function Footer() {
 	return (
-		<footer>
+		<footer className={styles.footer}>
 			<p>
 				This website is a result of a university group project, performed in the course
 				IDATA2301 Web technologies, at NTNU. All the information provided here is a result

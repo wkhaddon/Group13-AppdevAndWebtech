@@ -1,0 +1,13 @@
+@use "@/styles/main" as *;
+
+.footer {
+	@include flex-center;
+	flex-direction: column;
+	width: 100%;
+
+	padding: $spacing-md;
+	background-color: var(--bg);
+	color: var(--text-secondary);
+
+	border-top: 1px solid var(--shadow);
+}
