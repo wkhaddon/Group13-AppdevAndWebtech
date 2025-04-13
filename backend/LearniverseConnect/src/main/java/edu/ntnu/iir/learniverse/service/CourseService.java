@@ -2,10 +2,12 @@ package edu.ntnu.iir.learniverse.service;
 
 import edu.ntnu.iir.learniverse.entity.Course;
 import edu.ntnu.iir.learniverse.repository.CourseRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class CourseService {
   private final CourseRepository courseRepository;
 
