@@ -3,33 +3,87 @@ package edu.ntnu.iir.learniverse.controller;
 import edu.ntnu.iir.learniverse.dto.LoginRequest;
 import edu.ntnu.iir.learniverse.dto.RegisterRequest;
 import edu.ntnu.iir.learniverse.entity.User;
+import edu.ntnu.iir.learniverse.security.JwtUtil;
 import edu.ntnu.iir.learniverse.service.AuthService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Duration;
+import java.util.Map;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
   private final AuthService authService;
+  private final JwtUtil jwtUtil;
 
-  public AuthController(AuthService authService) {
+  public AuthController(AuthService authService, JwtUtil jwtUtil) {
     this.authService = authService;
+    this.jwtUtil = jwtUtil;
   }
 
   @PostMapping("/register")
   public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
     User user = authService.register(request);
-    return ResponseEntity.ok(user);
+    if (user == null) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+          .body(Map.of("error", "User already exists"));
+    }
+
+    String jwt = jwtUtil.generateToken(user.getUsername(), user.getRole().name());
+    ResponseCookie cookie = createJwtCookie(jwt);
+
+    return ResponseEntity.ok()
+        .header(HttpHeaders.SET_COOKIE, cookie.toString())
+        .body("User registered successfully");
   }
 
   @PostMapping("/login")
   public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
-    return authService.login(request)
-        .<ResponseEntity<?>>map(ResponseEntity::ok)
-        .orElse(ResponseEntity.status(401).body("Invalid credentials"));
+    Optional<User> userOpt = authService.login(request);
+    if (userOpt.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+    }
+
+    User user = userOpt.get();
+    String jwt = jwtUtil.generateToken(user.getUsername(), user.getRole().name());
+    ResponseCookie cookie = createJwtCookie(jwt);
+
+    return ResponseEntity.ok()
+        .header(HttpHeaders.SET_COOKIE, cookie.toString())
+        .body("Login successful");
+  }
+
+  @PostMapping("/logout")
+  public ResponseEntity<?> logout() {
+    ResponseCookie cookie = ResponseCookie.from("jwt", "")
+        .httpOnly(true)
+        .secure(false) // TODO: Set to true in production
+        .path("/")
+        .maxAge(0)
+        .sameSite("Strict")
+        .build();
+
+    return ResponseEntity.ok()
+        .header(HttpHeaders.SET_COOKIE, cookie.toString())
+        .body("Logout successful");
+  }
+
+  private ResponseCookie createJwtCookie(String jwt) {
+    return ResponseCookie.from("jwt", jwt)
+        .httpOnly(true)
+        .secure(false) // TODO: Set to true in production
+        .path("/")
+        .maxAge(Duration.ofDays(1))
+        .sameSite("Strict")
+        .build();
   }
 }
