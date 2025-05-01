@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 public class SecurityConfig {
@@ -29,5 +31,18 @@ public class SecurityConfig {
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
+  }
+
+  @Bean
+  public CorsConfiguration corsConfigurationSource() {
+    CorsConfiguration config = new CorsConfiguration();
+    config.addAllowedOrigin("http://localhost:5173"); // TODO: Update to the correct frontend URL
+    config.addAllowedMethod("*");
+    config.addAllowedHeader("*");
+    config.setAllowCredentials(true);
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", config);
+    return source;
   }
 }
