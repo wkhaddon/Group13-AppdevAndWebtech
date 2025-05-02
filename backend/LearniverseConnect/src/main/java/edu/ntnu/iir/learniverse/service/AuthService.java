@@ -25,11 +25,11 @@ public class AuthService {
     String normalizedEmail = normalizeEmail(request.email);
 
     // Check for existing username/email
-    if (userRepository.findByUsername(request.username).isPresent()) {
+    if (userRepository.findByUsernameIgnoreCase(request.username).isPresent()) {
       throw new IllegalArgumentException("Username already exists");
     }
 
-    if (userRepository.findByEmail(normalizedEmail).isPresent()) {
+    if (userRepository.findByEmailIgnoreCase(normalizedEmail).isPresent()) {
       throw new IllegalArgumentException("Email already exists");
     }
 
@@ -43,15 +43,19 @@ public class AuthService {
   }
 
   public Optional<User> login(LoginRequest request) {
-    Optional<User> userOptional = userRepository.findByUsername(request.username);
-    if (userOptional.isPresent()) {
-      User user = userOptional.get();
-      if (passwordEncoder.matches(request.password, user.getPasswordHash())) {
-        return Optional.of(user);
-      }
+    Optional<User> userOpt;
+
+    // Determine if it's an email (contains @) or username
+    if (request.identifier.contains("@")) {
+      userOpt = userRepository.findByEmailIgnoreCase(normalizeEmail(request.identifier));
+    } else {
+      userOpt = userRepository.findByUsernameIgnoreCase(request.identifier);
     }
-    return Optional.empty();
+
+    return userOpt
+        .filter(user -> passwordEncoder.matches(request.password, user.getPasswordHash()));
   }
+
 
   private String normalizeEmail(String email) {
     String[] parts = email.split("@");

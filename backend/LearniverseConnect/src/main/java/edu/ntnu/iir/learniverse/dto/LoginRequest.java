@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 public class LoginRequest {
 
   @NotBlank
-  public String username;
+  public String identifier;
 
   @NotBlank
   public String password;

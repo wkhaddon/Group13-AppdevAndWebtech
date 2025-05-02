@@ -5,15 +5,13 @@ import edu.ntnu.iir.learniverse.dto.RegisterRequest;
 import edu.ntnu.iir.learniverse.entity.User;
 import edu.ntnu.iir.learniverse.security.JwtUtil;
 import edu.ntnu.iir.learniverse.service.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
 import java.util.Map;
@@ -66,7 +64,7 @@ public class AuthController {
   public ResponseEntity<?> logout() {
     ResponseCookie cookie = ResponseCookie.from("jwt", "")
         .httpOnly(true)
-        .secure(false) // TODO: Set to true in production
+        .secure(true)
         .path("/")
         .maxAge(0)
         .sameSite("Strict")
@@ -75,6 +73,17 @@ public class AuthController {
     return ResponseEntity.ok()
         .header(HttpHeaders.SET_COOKIE, cookie.toString())
         .body("Logout successful");
+  }
+
+  @GetMapping("/validate")
+  public ResponseEntity<?> validate(HttpServletRequest request) {
+    String username = (String) request.getAttribute("username");
+    String role = (String) request.getAttribute("role");
+    if (username == null || role == null) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
+    }
+
+    return ResponseEntity.ok(Map.of("username", username, "role", role));
   }
 
   private ResponseCookie createJwtCookie(String jwt) {
