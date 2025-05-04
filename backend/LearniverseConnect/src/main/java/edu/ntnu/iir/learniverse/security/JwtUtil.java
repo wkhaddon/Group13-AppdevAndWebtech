@@ -1,5 +1,6 @@
 package edu.ntnu.iir.learniverse.security;
 
+import edu.ntnu.iir.learniverse.config.Env;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -10,13 +11,13 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-  private final SecretKey key = Keys.hmacShaKeyFor(System.getenv("JWT_SECRET").getBytes());
+  private final SecretKey key = Keys.hmacShaKeyFor(Env.get(Env.EnvVar.JWT_SECRET).getBytes());
   public static final long EXPIRATION_TIME_MILLIS = 1000L * 60L * 60L * 24L; // 24h
 
   @PostConstruct
   public void validateEnvVars() {
-    String jwtSecret = System.getenv("JWT_SECRET");
-    if (jwtSecret == null || jwtSecret.isEmpty()) {
+    String jwtSecret = Env.get(Env.EnvVar.JWT_SECRET);
+    if (jwtSecret.isEmpty()) {
       throw new IllegalStateException("JWT_SECRET environment variable is not set");
     }
 
@@ -35,12 +36,17 @@ public class JwtUtil {
         .compact();
   }
 
-  public Jws<Claims> validateToken(String token) {
-    return Jwts.parser()
-        .verifyWith(key)
-        .build()
-        .parseSignedClaims(token);
+  public Jws<Claims> validateToken(String token) throws InvalidJwtException {
+    try {
+      return Jwts.parser()
+          .verifyWith(key)
+          .build()
+          .parseSignedClaims(token);
+    } catch (JwtException | IllegalArgumentException e) {
+      throw new InvalidJwtException("Invalid JWT token: " + e.getMessage(), e);
+    }
   }
+
 
   public String getUsernameFromToken(String token) {
     return validateToken(token).getPayload().getSubject();
