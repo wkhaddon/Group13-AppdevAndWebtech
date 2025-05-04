@@ -12,9 +12,10 @@ public class LearniverseConnectApplication {
       .load();
 
     String[] envVars = {
-      "DB_URL",
-      "DB_USERNAME",
-      "DB_PASSWORD"
+        "DB_URL",
+        "DB_USERNAME",
+        "DB_PASSWORD",
+        "JWT_SECRET"
     };
 
     for (String key : envVars) {
