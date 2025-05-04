@@ -18,7 +18,7 @@ public class FavoriteController {
   }
 
   @GetMapping("/user/{userId}")
-  public List<Favorite> getByUser(Long userId) {
+  public List<Favorite> getByUser(@PathVariable Long userId) {
     return favoriteService.getByUser(userId);
   }
 

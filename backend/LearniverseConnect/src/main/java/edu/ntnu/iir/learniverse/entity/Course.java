@@ -30,6 +30,8 @@ public class Course {
 
   private String relatedCertification;
 
+  private boolean isHidden;
+
   @ManyToOne
   @JoinColumn(name = "category_id", nullable = false)
   private Category category;

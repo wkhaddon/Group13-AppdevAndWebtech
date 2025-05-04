@@ -28,6 +28,6 @@ public class FavoriteService {
 
   public void deleteByUserAndCourse(Long userId, Long courseId) {
     favoriteRepository.findByUserIdAndCourseId(userId, courseId)
-        .ifPresent(favorite -> favoriteRepository.delete(favorite));
+        .ifPresent(favoriteRepository::delete);
   }
 }

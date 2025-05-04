@@ -8,14 +8,24 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class LearniverseConnectApplication {
   public static void main(String[] args) {
     Dotenv dotenv = Dotenv.configure()
-      .directory("./src/main/resources")
+      .directory(".")
       .load();
 
-    // TODO: Find a better way to set environment variables
-    // This assumes that .env is correctly loaded and contains the necessary variables
-    System.setProperty("DB_URL", dotenv.get("DB_URL"));
-    System.setProperty("DB_USERNAME", dotenv.get("DB_USERNAME"));
-    System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
+    String[] envVars = {
+      "DB_URL",
+      "DB_USERNAME",
+      "DB_PASSWORD"
+    };
+
+    for (String key : envVars) {
+      String value = dotenv.get(key);
+      if (value == null) {
+        System.err.println("Environment variable " + key + " is not set.");
+        System.exit(1);
+      }
+
+      System.setProperty(key, value);
+    }
 
     SpringApplication.run(LearniverseConnectApplication.class, args);
   }
