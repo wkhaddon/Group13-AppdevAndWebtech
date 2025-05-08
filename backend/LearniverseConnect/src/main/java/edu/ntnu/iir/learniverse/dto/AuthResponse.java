@@ -3,10 +3,10 @@ package edu.ntnu.iir.learniverse.dto;
 import edu.ntnu.iir.learniverse.entity.User;
 
 public class AuthResponse {
-  public Long id;
-  public String username;
-  public String email;
-  public String role;
+  public final Long id;
+  public final String username;
+  public final String email;
+  public final String role;
 
   public AuthResponse(User user) {
     this.id = user.getId();

@@ -1,6 +1,11 @@
 -- Ensure you're logged in as the PostgreSQL superuser (postgres) before running this script
 -- Run with the following command: psql -U postgres -f setup_database.sql
 
+-- If service isn't running, start it with:
+-- Windows : pg_ctl -D "C:\Program Files\PostgreSQL\16\data" start (adjust path as needed)
+-- Mac : brew services start postgresql@16
+-- Linux : sudo service postgresql start
+
 -- Step 1: Create the database (if it doesn't already exist)
 CREATE DATABASE IF NOT EXISTS learniverse;
 

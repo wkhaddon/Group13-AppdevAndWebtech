@@ -39,9 +39,9 @@ public class GlobalExceptionHandler {
   }
 
   private static class ErrorResponse {
-    public int status;
-    public String message;
-    public LocalDateTime timestamp;
+    public final int status;
+    public final String message;
+    public final LocalDateTime timestamp;
 
     public ErrorResponse(int status, String message) {
       this.status = status;

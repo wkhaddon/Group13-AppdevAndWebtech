@@ -1,39 +1,58 @@
 package edu.ntnu.iir.learniverse.security;
 
+import edu.ntnu.iir.learniverse.config.Env;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
+import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
-  private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-  private final long expirationTimeMillis = 1000L * 60L * 60L * 24L; // 24h
+  private final SecretKey key = Keys.hmacShaKeyFor(Env.get(Env.EnvVar.JWT_SECRET).getBytes());
+  public static final long EXPIRATION_TIME_MILLIS = 1000L * 60L * 60L * 24L; // 24h
+
+  @PostConstruct
+  public void validateEnvVars() {
+    String jwtSecret = Env.get(Env.EnvVar.JWT_SECRET);
+    if (jwtSecret.isEmpty()) {
+      throw new IllegalStateException("JWT_SECRET environment variable is not set");
+    }
+
+    if (jwtSecret.length() < 32) {
+      throw new IllegalStateException("JWT_SECRET must be at least 32 characters long");
+    }
+  }
 
   public String generateToken(String username, String role) {
     return Jwts.builder()
-        .setSubject(username)
+        .subject(username)
         .claim("role", role)
-        .setIssuedAt(new Date())
-        .setExpiration(new Date(System.currentTimeMillis() + expirationTimeMillis))
+        .issuedAt(new Date())
+        .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME_MILLIS))
         .signWith(key)
         .compact();
   }
 
-  public Jws<Claims> validateToken(String token) {
-    return Jwts.parser()
-        .setSigningKey(key)
-        .build()
-        .parseClaimsJws(token);
+  public Jws<Claims> validateToken(String token) throws InvalidJwtException {
+    try {
+      return Jwts.parser()
+          .verifyWith(key)
+          .build()
+          .parseSignedClaims(token);
+    } catch (JwtException | IllegalArgumentException e) {
+      throw new InvalidJwtException("Invalid JWT token: " + e.getMessage(), e);
+    }
   }
 
+
   public String getUsernameFromToken(String token) {
-    return validateToken(token).getBody().getSubject();
+    return validateToken(token).getPayload().getSubject();
   }
 
   public String getRoleFromToken(String token) {
-    return validateToken(token).getBody().get("role", String.class);
+    return validateToken(token).getPayload().get("role", String.class);
   }
 }
