@@ -21,7 +21,7 @@ INSERT INTO course (title, description, level, category_id, closest_session) VAL
     ('Real-Time Programming in Java', 'Learn Java for real-time applications', 'Expert', 1, '2025-06-03'),
     ('SQL Essentials', 'Master SQL and relational databases', 'Beginner', 1, '2025-06-10'),
     ('Azure Fundamentals', 'Learn Microsoft Azure Cloud Basics', 'Beginner', 1, '2025-08-05')
-ON CONFLICT (title) DO NOTHING;
+ON CONFLICT DO NOTHING;
 
 -- Step 5: Insert sample course-provider price mappings
 INSERT INTO course_provider (course_id, provider_id, price) VALUES
