@@ -4,6 +4,7 @@ import path from 'path';
 
 // https://vite.dev/config/
 export default defineConfig({
+	base: '/Group13-AppdevAndWebtech/',
 	plugins: [react()],
 	resolve: {
 		alias: {
