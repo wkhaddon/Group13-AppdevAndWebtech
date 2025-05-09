@@ -3,6 +3,7 @@
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
+	"homepage": "https://wkhaddon.github.io/Group13-AppdevAndWebtech/",
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
