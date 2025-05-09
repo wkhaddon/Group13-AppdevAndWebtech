@@ -1,9 +1,11 @@
 import styles from './Header.module.scss';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext'; // adjust path as needed
+import { useState } from 'react';
 
 function Header() {
 	const { isLoggedIn, logout } = useAuth();
+	const [menuOpen, setMenuOpen] = useState(false);
 
 	return (
 		<header className={styles.header}>
@@ -13,27 +15,34 @@ function Header() {
 						Learniverse Connect
 					</Link>
 				</h2>
-				<nav className={styles.nav}>
-					<Link to="/">Home</Link>
-					<Link to="/courses">Courses</Link>
-					<Link to="/about">About</Link>
+
+				<button
+					className={styles.hamburger}
+					onClick={() => setMenuOpen(!menuOpen)}
+					aria-label="Toggle menu"
+				>
+					☰
+				</button>
+
+				<nav
+					className={`${styles.nav} ${menuOpen ? styles.open : ''}`}
+				>
+					<Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
+					<Link to="/courses" onClick={() => setMenuOpen(false)}>Courses</Link>
+					<Link to="/about" onClick={() => setMenuOpen(false)}>About</Link>
 
 					{isLoggedIn ? (
 						<>
-							<Link to="/favorites">Favorites</Link>
-							<Link to="/profile">Account</Link>
-							<button onClick={logout} className={styles.logout}>
+							<Link to="/favorites" onClick={() => setMenuOpen(false)}>Favorites</Link>
+							<Link to="/profile" onClick={() => setMenuOpen(false)}>Account</Link>
+							<button onClick={() => { logout(); setMenuOpen(false); }} className={styles.logout}>
 								Logout
 							</button>
 						</>
 					) : (
 						<>
-							<Link to="/login" className={styles.login}>
-								Login
-							</Link>
-							<Link to="/register" className={styles.register}>
-								Register
-							</Link>
+							<Link to="/login" className={styles.login} onClick={() => setMenuOpen(false)}>Login</Link>
+							<Link to="/register" className={styles.register} onClick={() => setMenuOpen(false)}>Register</Link>
 						</>
 					)}
 				</nav>
