@@ -1,7 +1,7 @@
 @use '@/styles/main' as *;
 
 .header {
-	background-color: var(--bg);
+	background-color: var(--header);
 	border-bottom: 1px solid var(--shadow);
 	position: sticky;
 	top: 0;
