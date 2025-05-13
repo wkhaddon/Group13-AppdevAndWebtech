@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 
 import Header from './components/Header';
+import CallToAction from './components/CallToAction';
 import Footer from './components/Footer';
 
 import Home from './pages/Home';
@@ -42,7 +43,7 @@ function App() {
 					<Route path="*" element={<NotFound />} />
 				</Routes>
 			</main>
-
+			<CallToAction />
 			<Footer />
 		</>
 	);

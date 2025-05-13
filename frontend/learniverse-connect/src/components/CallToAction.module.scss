@@ -1,0 +1,53 @@
+@use '@/styles/main' as *;
+
+.cta {
+	@include flex-center;
+	flex-direction: column;
+	width: 100%;
+	padding: clamp(1rem, 2vw, 2rem);
+	margin: 0 auto;
+	box-sizing: border-box;
+	background-color: var(--header);
+	border-top: 1px solid var(--shadow);
+	text-align: center;
+}
+
+.container {
+	max-width: 1150px;
+	margin: 0 auto;
+}
+
+.title {
+	font-size: 2rem;
+	margin-bottom: 0.5rem;
+	font-weight: bold;
+	color: var(--primary);
+}
+
+.description {
+	font-size: 1.2rem;
+	margin-bottom: 1.5rem;
+	max-width: 800px;
+	color: var(--primary);
+}
+
+.button {
+	padding: 0.75rem 2rem;
+	font-size: 1rem;
+	font-weight: bold;
+	background-color: var(--surface);
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+	&:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	}
+
+	&:active {
+		transform: translateY(0);
+	}
+}

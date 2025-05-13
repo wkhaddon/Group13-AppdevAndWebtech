@@ -46,7 +46,7 @@
 
 	> a,
 	> button {
-		background-color: var(--surface);
+		background-color: var(--primary);
 		color: var(--button-text);
 		border: none;
 		padding: 0.5rem 1rem;
@@ -67,7 +67,7 @@
 
 	> .login,
 	> .register {
-		background-color: var(--primary);
+		background-color: var(--surface);
 
 		&:hover {
 			background-color: var(--primary-hover);
