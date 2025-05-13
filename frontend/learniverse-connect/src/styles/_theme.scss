@@ -22,6 +22,7 @@ $light-theme: (
 	danger-hover: $color-danger-hover,
 	overlay: $color-overlay-light,
 	font: $font-sans,
+	surface2: $color-surface-light2,
 );
 
 $dark-theme: (
@@ -38,6 +39,7 @@ $dark-theme: (
 	danger-hover: $color-danger-hover,
 	overlay: $color-overlay-dark,
 	font: $font-sans,
+	surface2: $color-surface-dark2,
 );
 
 :root {
