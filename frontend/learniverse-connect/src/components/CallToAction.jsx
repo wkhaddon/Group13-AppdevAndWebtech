@@ -8,9 +8,9 @@ function CallToAction() {
 				<p className={styles.description}>
 					Discover new opportunities and take the first step toward your future with Learniverse Connect.
 				</p>
-				<button className={styles.button}>
+				<a href="mailto:contact@learniverse.com" className={styles.button}>
 					Contact us
-				</button>
+				</a>
 			</div>
 		</section>
 	);
