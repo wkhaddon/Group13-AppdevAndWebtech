@@ -23,6 +23,10 @@
   	margin-bottom: 2.5rem;
   	color: var(--text);
 
+	@media (max-width: 768px) {
+		max-width: 90%;
+	}
+
 	h2{
 		font-size: 2rem;
 		margin-bottom: 0.625rem;
@@ -47,6 +51,10 @@
   	color: var(--text);
 	background-color: var(--hero);
 	font-size: 1.25rem;
+
+	@media (max-width: 768px) {
+		max-width: 90%;
+	}
 
 	h2{
 		font-size: 2rem;
@@ -85,6 +93,10 @@
 	text-align: center;
   	margin-bottom: 1.25rem;
   	color: var(--text);
+
+	@media (max-width: 768px) {
+		max-width: 90%;
+	}
 
 	h2{
 		font-size: 2rem;
