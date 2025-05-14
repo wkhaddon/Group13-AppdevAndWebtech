@@ -1,6 +1,6 @@
 package edu.ntnu.iir.learniverse.controller;
 
-import edu.ntnu.iir.learniverse.entity.CourseProvider;
+import edu.ntnu.iir.learniverse.entity.ProviderOrganization;
 import edu.ntnu.iir.learniverse.service.CourseProviderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +18,12 @@ public class CourseProviderController {
   }
 
   @GetMapping
-  public List<CourseProvider> getAll() {
+  public List<ProviderOrganization> getAll() {
     return courseProviderService.getAll();
   }
 
   @PostMapping
-  public ResponseEntity<CourseProvider> create(@RequestBody CourseProvider cp) {
+  public ResponseEntity<ProviderOrganization> create(@RequestBody ProviderOrganization cp) {
     return ResponseEntity.status(HttpStatus.CREATED).body(courseProviderService.save(cp));
   }
 }

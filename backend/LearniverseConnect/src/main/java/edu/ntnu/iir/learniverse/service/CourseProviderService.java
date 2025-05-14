@@ -1,6 +1,6 @@
 package edu.ntnu.iir.learniverse.service;
 
-import edu.ntnu.iir.learniverse.entity.CourseProvider;
+import edu.ntnu.iir.learniverse.entity.ProviderOrganization;
 import edu.ntnu.iir.learniverse.repository.CourseProviderRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +14,11 @@ public class CourseProviderService {
     this.courseProviderRepository = courseProviderRepository;
   }
 
-  public List<CourseProvider> getAll() {
+  public List<ProviderOrganization> getAll() {
     return courseProviderRepository.findAll();
   }
 
-  public CourseProvider save(CourseProvider cp) {
+  public ProviderOrganization save(ProviderOrganization cp) {
     return courseProviderRepository.save(cp);
   }
 }

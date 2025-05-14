@@ -26,8 +26,8 @@ public class CourseResponse {
     this.sessionStartDate = course.getSessionStartDate() != null ? course.getSessionStartDate().toString() : null;
     this.sessionEndDate = course.getSessionEndDate() != null ? course.getSessionEndDate().toString() : null;
     this.relatedCertification = course.getRelatedCertification();
-    this.categoryId = course.getCategory().getCategoryId().intValue();
+    this.categoryId = course.getCategory().getId().intValue();
     this.categoryName = course.getCategory().getName();
-    this.providerName = course.getProvider() != null ? course.getProvider().getProviderName() : null;
+    this.providerName = course.getProvider() != null ? course.getProvider().getName() : null;
   }
 }

@@ -2,8 +2,8 @@ package edu.ntnu.iir.learniverse.service;
 
 import edu.ntnu.iir.learniverse.dto.LoginRequest;
 import edu.ntnu.iir.learniverse.dto.RegisterRequest;
+import edu.ntnu.iir.learniverse.entity.GlobalRole;
 import edu.ntnu.iir.learniverse.entity.User;
-import edu.ntnu.iir.learniverse.entity.UserRole;
 import edu.ntnu.iir.learniverse.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,7 @@ public class AuthService {
     user.setUsername(request.username);
     user.setEmail(normalizedEmail);
     user.setPasswordHash(passwordEncoder.encode(request.password));
-    user.setRole(UserRole.CUSTOMER);
+    user.setGlobalRole(GlobalRole.USER);
     user.setCreatedAt(LocalDateTime.now());
     return userRepository.save(user);
   }

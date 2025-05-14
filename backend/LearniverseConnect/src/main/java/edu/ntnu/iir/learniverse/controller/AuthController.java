@@ -39,7 +39,7 @@ public class AuthController {
           .body(Map.of("error", "User already exists"));
     }
 
-    String jwt = jwtUtil.generateToken(user.getUsername(), user.getRole().name());
+    String jwt = jwtUtil.generateToken(user.getUsername(), user.getGlobalRole().name());
     ResponseCookie cookie = createJwtCookie(jwt);
 
     return ResponseEntity.ok()
@@ -55,7 +55,7 @@ public class AuthController {
     }
 
     User user = userOpt.get();
-    String jwt = jwtUtil.generateToken(user.getUsername(), user.getRole().name());
+    String jwt = jwtUtil.generateToken(user.getUsername(), user.getGlobalRole().name());
     ResponseCookie cookie = createJwtCookie(jwt);
 
     return ResponseEntity.ok()

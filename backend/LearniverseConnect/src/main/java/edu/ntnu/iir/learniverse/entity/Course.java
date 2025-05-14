@@ -7,44 +7,44 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-@Entity
 @Getter
+@Entity
 @Table(name = "courses")
 public class Course {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = false)
   private String title;
-
-  @Column(columnDefinition = "TEXT", nullable=false)
+  @Column(columnDefinition = "TEXT")
   private String description;
 
   @Enumerated(EnumType.STRING)
   private CourseLevel level;
 
-  private BigDecimal ectsCredits;
-  private BigDecimal hoursPerWeek;
-
-  private LocalDate sessionStartDate;
-  private LocalDate sessionEndDate;
-
-  private String relatedCertification;
-
+  private BigDecimal price;
   private boolean isHidden;
 
+  @Column(name = "session_start_date")
+  private LocalDate sessionStartDate;
+
+  @Column(name = "session_end_date")
+  private LocalDate sessionEndDate;
+
+  @Column(name = "ects_credits")
+  private BigDecimal ectsCredits;
+
+  @Column(name = "hours_per_week")
+  private BigDecimal hoursPerWeek;
+
+  @Column(name = "related_certification")
+  private String relatedCertification;
+
   @ManyToOne
-  @JoinColumn(name = "category_id", nullable = false)
+  @JoinColumn(name = "category_id")
   private Category category;
 
-  @OneToMany(mappedBy = "course")
-  private List<Favorite> favorites;
-
-  @ManyToOne()
-  @JoinColumn(name = "course_provider_id", nullable = false)
-  private CourseProvider provider;
-
-  @OneToMany(mappedBy = "course")
-  private List<OrderCourse> orderCourses;
+  @ManyToOne
+  @JoinColumn(name = "provider_id")
+  private ProviderOrganization provider;
 }

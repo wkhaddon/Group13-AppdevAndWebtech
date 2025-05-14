@@ -2,26 +2,24 @@ package edu.ntnu.iir.learniverse.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NonNull;
 
 import java.util.List;
 
 @Getter
 @Entity
-@Table(name = "categories")
-public class Category {
+@Table(name = "provider_organizations")
+public class ProviderOrganization {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "category_id")
   private Long id;
 
-  @NonNull
-  @Column(nullable = false, unique = true)
   private String name;
+  private String currency;
+  private boolean approved;
 
-  @Column(columnDefinition = "TEXT")
-  private String description;
+  @OneToMany(mappedBy = "organization")
+  private List<UserOrganizationMembership> memberships;
 
-  @OneToMany(mappedBy = "category")
+  @OneToMany(mappedBy = "provider")
   private List<Course> courses;
 }
