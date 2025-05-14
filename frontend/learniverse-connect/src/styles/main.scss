@@ -1,5 +1,5 @@
 @forward './_variables';
-@forward './theme';
+@forward './_theme';
 @forward './_mixins';
 
 html,
@@ -11,7 +11,7 @@ body {
 	overflow-x: hidden;
 
 	background-color: var(--bg);
-	font-family: var(--font);
+	font-family: var(--font-sans);
 }
 
 .container {
