@@ -1,12 +1,14 @@
 package edu.ntnu.iir.learniverse.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
+@Getter
 @Table(name = "courses")
 public class Course {
   @Id
@@ -39,8 +41,9 @@ public class Course {
   @OneToMany(mappedBy = "course")
   private List<Favorite> favorites;
 
-  @OneToMany(mappedBy = "course")
-  private List<CourseProvider> providers;
+  @ManyToOne()
+  @JoinColumn(name = "course_provider_id", nullable = false)
+  private CourseProvider provider;
 
   @OneToMany(mappedBy = "course")
   private List<OrderCourse> orderCourses;

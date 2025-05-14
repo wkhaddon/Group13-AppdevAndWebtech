@@ -1,18 +1,19 @@
 package edu.ntnu.iir.learniverse.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 
 @Entity
+@Getter
 @Table(name = "course_providers")
 public class CourseProvider {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long courseProviderId;
 
-  @ManyToOne
-  @JoinColumn(name = "course_id", nullable = false)
+  @OneToMany(mappedBy = "provider")
   private Course course;
 
   @Column(nullable = false)

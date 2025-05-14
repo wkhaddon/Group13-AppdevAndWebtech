@@ -1,5 +1,6 @@
 package edu.ntnu.iir.learniverse.controller;
 
+import edu.ntnu.iir.learniverse.dto.CourseResponse;
 import edu.ntnu.iir.learniverse.entity.Course;
 import edu.ntnu.iir.learniverse.service.CourseService;
 import org.springframework.http.HttpStatus;

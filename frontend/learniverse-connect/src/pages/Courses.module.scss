@@ -1,0 +1,16 @@
+@use '@/styles/main' as *;
+
+.courses {
+    @include grid(3, $spacing-sm);
+    
+    gap: 1rem;
+    padding: $spacing-md $spacing-md;
+    text-align: center;
+    background-color: var(--bg);
+}
+
+.course {
+    @include card;
+
+    color: var(--text);
+}
