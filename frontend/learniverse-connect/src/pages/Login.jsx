@@ -1,5 +1,5 @@
 import styles from './Login.module.scss';
-
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -61,7 +61,9 @@ function Login() {
 				<button className={styles.submit} type='submit'>Login</button>
 			</form>
 			<p className={styles.register}>
-				Dont have an account? <a href='/register'>Register</a>
+				Dont have an account? <Link to="/register">
+				Register
+			</Link>
 			</p>
 		</section>
 	);

@@ -1,7 +1,9 @@
+@use '@/styles/main' as *;
+
 .hero {
 	text-align: center;
 	padding: 6.25rem 1.25rem;
-	background-color: var(--bg);
+	background-color: var(--hero);
 	border-bottom: 1px solid var(--shadow);
 	color: var(--text);
 }
@@ -17,7 +19,7 @@ p {
 }
 
 .cta {
-	background-color: var(--primary);
+	background-color: var(--surface);
 	color: var(--text);
 	padding: 0.625rem 1.25rem;
 	text-decoration: none;
@@ -30,5 +32,6 @@ p {
 
 	&:hover {
 		background-color: var(--primary-hover);
+		color: $color-text-dark;
 	}
 }

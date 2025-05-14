@@ -1,8 +1,26 @@
 @use 'sass:color';
 
-// COLOR TOKENS (LIGHT THEME)
+// COLOR TOKENS
+$color-primary: #ffffff;
+$color-primary-hover: color.adjust($color-primary, $lightness: -10%);
+
+$color-danger: #ff4d4f;
+$color-danger-hover: color.adjust($color-danger, $lightness: -10%);
+
+$color-header: #005377;
+
+$color-hero-light: #fff;
+$color-hero-dark: #404040;
+
+$color-footer: #052f5f;
+
 $color-bg-light: #d5c67a;
 $color-surface-light: #06a77d;
+$color-surface-dark: #454545;
+
+$color-surface-light2: #45dc9e;
+$color-surface-dark2: #676767;
+
 $color-surface-hover-light: color.adjust($color-surface-light, $lightness: -5%);
 $color-overlay-light: rgba(255, 255, 255, 0.05);
 
