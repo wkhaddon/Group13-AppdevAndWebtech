@@ -1,18 +1,22 @@
+@use 'sass:math';
+
 @use '@/styles/main' as *;
 
 .features {
 	@include grid(3, 30px);
 
-	padding: $spacing-md $spacing-md;
-	text-align: center;
-	background-color: var(--bg);
+	& {
+		padding: $spacing-md $spacing-md;
+		text-align: center;
+		background-color: var(--bg);
+	}
 }
 
 .feature {
 	@include card;
 
 	color: var(--text);
-	margin-bottom: clamp(var($spacing-md / 2));
+	margin-bottom: clamp(math.div($spacing-md, 2), 1vw, $spacing-lg);
 	transition:
 		transform 0.3s ease,
 		box-shadow 0.3s ease;

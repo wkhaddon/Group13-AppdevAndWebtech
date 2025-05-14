@@ -1,6 +1,6 @@
 @use './_variables' as *;
 
-@mixin export-theme($map) {
+@mixin export($map) {
 	@each $key, $value in $map {
 		--#{$key}: #{$value};
 	}
@@ -8,42 +8,49 @@
 
 $light-theme: (
 	bg: $color-bg-light,
-	header: $color-header,
-	footer: $color-footer,
 	surface: $color-surface-light,
 	surface-hover: $color-surface-hover-light,
+	overlay: $color-overlay-light,
+	header: $color-header-light,
+	footer: $color-footer-dark,
+	primary: $color-primary-light,
+	primary-hover: $color-primary-light-hover,
 	shadow: $shadow-light,
 	text: $color-text-dark,
 	text-secondary: $color-text-secondary-dark,
-	primary: $color-primary,
-	primary-hover: $color-primary-hover,
-	danger: $color-danger,
-	danger-hover: $color-danger-hover,
-	overlay: $color-overlay-light,
-	font: $font-sans,
 );
 
 $dark-theme: (
 	bg: $color-bg-dark,
+	header: $color-header-dark,
+	footer: $color-footer-dark,
 	surface: $color-surface-dark,
 	surface-hover: $color-surface-hover-dark,
+	primary: $color-primary-dark,
+	primary-hover: $color-primary-dark-hover,
 	shadow: $shadow-dark,
 	text: $color-text-light,
 	text-secondary: $color-text-secondary-light,
-	primary: $color-primary,
-	primary-hover: $color-primary-hover,
 	danger: $color-danger,
 	danger-hover: $color-danger-hover,
 	overlay: $color-overlay-dark,
-	font: $font-sans,
+);
+
+$common: (
+	danger: $color-danger,
+	danger-hover: $color-danger-hover,
+
+	font-sans: $font-sans,
+	font-mono: $font-mono,
 );
 
 :root {
-	@include export-theme($light-theme);
+	@include export($light-theme);
+	@include export($common);
 }
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		@include export-theme($dark-theme);
+		@include export($dark-theme);
 	}
 }

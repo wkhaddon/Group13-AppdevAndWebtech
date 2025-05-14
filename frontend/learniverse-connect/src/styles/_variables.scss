@@ -1,36 +1,40 @@
 @use 'sass:color';
 
-// COLOR TOKENS
-$color-primary: #fff;
-$color-primary-hover: color.adjust($color-primary, $lightness: -10%);
-
-$color-danger: #ff4d4f;
-$color-danger-hover: color.adjust($color-danger, $lightness: -10%);
-
-$color-header: #005377;
-
-$color-footer: #052f5f;
-
+// COLOR TOKENS (LIGHT THEME)
 $color-bg-light: #d5c67a;
-$color-bg-dark: #121212;
-
 $color-surface-light: #06a77d;
-$color-surface-dark: #1e1e1e;
-
 $color-surface-hover-light: color.adjust($color-surface-light, $lightness: -5%);
-$color-surface-hover-dark: color.adjust($color-surface-dark, $lightness: -2%);
+$color-overlay-light: rgba(255, 255, 255, 0.05);
 
+$color-header-light: #005377;
+$color-footer-light: #052f5f;
+
+$color-primary-light: #fff;
+$color-primary-light-hover: color.adjust($color-primary-light, $lightness: -10%);
 $shadow-light: rgba(0, 0, 0, 0.2);
-$shadow-dark: rgba(0, 0, 0, 0.5);
 
 $color-text-light: #f8f9fa;
-$color-text-dark: #1e1e1e;
-
 $color-text-secondary-light: #6c757d;
+
+// COLOR TOKENS (DARK THEME)
+$color-bg-dark: #121212;
+$color-surface-dark: #1e1e1e;
+$color-surface-hover-dark: color.adjust($color-surface-dark, $lightness: -2%);
+$color-overlay-dark: rgba(255, 255, 255, 0.05);
+
+$color-primary-dark: #5c7cfa;
+$color-primary-dark-hover: color.adjust($color-primary-dark, $lightness: -10%);
+$shadow-dark: rgba(0, 0, 0, 0.5);
+
+$color-header-dark: #052f5f;
+$color-footer-dark: #052f5f;
+
+$color-text-dark: #1e1e1e;
 $color-text-secondary-dark: #adb5bd;
 
-$color-overlay-light: rgba(255, 255, 255, 0.05);
-$color-overlay-dark: rgba(255, 255, 255, 0.05);
+// COLOR TOKENS (COMMON)
+$color-danger: #ff4d4f;
+$color-danger-hover: color.adjust($color-danger, $lightness: -10%);
 
 // SPACING
 $spacing-xs: 0.25rem;
@@ -47,3 +51,12 @@ $radius-lg: 16px;
 // TYPOGRAPHY
 $font-sans: 'Inter', 'Segoe UI', sans-serif;
 $font-mono: 'Cascadia Code', monospace;
+
+// BREAKPOINTS
+$breakpoints: (
+	xs: 400px,
+	sm: 600px,
+	md: 900px,
+	lg: 1200px,
+	xl: 1440px
+);
