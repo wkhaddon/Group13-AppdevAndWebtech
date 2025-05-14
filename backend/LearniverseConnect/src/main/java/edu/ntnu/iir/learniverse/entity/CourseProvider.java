@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Getter
@@ -14,7 +15,7 @@ public class CourseProvider {
   private Long courseProviderId;
 
   @OneToMany(mappedBy = "provider")
-  private Course course;
+  private List<Course> course;
 
   @Column(nullable = false)
   private String providerName;

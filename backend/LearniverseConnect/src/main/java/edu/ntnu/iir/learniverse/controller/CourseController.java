@@ -26,7 +26,7 @@ public class CourseController {
   @Operation(summary = "Get all courses", description = "Retrieve a list of all available courses")
   @ApiResponse(responseCode = "200", description = "Successfully retrieved list of courses")
   @GetMapping
-  public List<Course> getAllCourses() {
+  public List<CourseResponse> getAllCourses() {
     return courseService.getAllCourses();
   }
 

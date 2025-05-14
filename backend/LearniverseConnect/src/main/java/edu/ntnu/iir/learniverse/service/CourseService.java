@@ -1,5 +1,6 @@
 package edu.ntnu.iir.learniverse.service;
 
+import edu.ntnu.iir.learniverse.dto.CourseResponse;
 import edu.ntnu.iir.learniverse.entity.Course;
 import edu.ntnu.iir.learniverse.repository.CourseRepository;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,12 @@ public class CourseService {
     this.courseRepository = courseRepository;
   }
 
-  public List<Course> getAllCourses() {
-    return courseRepository.findAll();
+  public List<CourseResponse> getAllCourses() {
+    List<Course> courses = courseRepository.findAll();
+
+    return courses.stream()
+        .map(CourseResponse::new)
+        .toList();
   }
 
   public Optional<Course> getCourseById(Long id) {
