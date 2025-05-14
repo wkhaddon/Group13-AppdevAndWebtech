@@ -1,3 +1,9 @@
+buildscript {
+    dependencies {
+        classpath("org.flywaydb:flyway-database-postgresql:11.8.2")
+    }
+}
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.1'
@@ -38,10 +44,3 @@ flyway {
     password = 'placeholder' // TODO: replace with env, DO NOT COMMIT WITH REAL PASSWORD
 }
 
-configurations {
-    flywayMigration // this adds visibility to Flyway’s plugin classloader
-}
-
-dependencies {
-    flywayMigration 'org.flywaydb:flyway-database-postgresql:11.8.2'
-}
