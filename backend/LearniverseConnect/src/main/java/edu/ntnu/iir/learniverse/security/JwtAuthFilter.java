@@ -4,9 +4,13 @@ import io.jsonwebtoken.JwtException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Collections;
 
 @Component
 public class JwtAuthFilter extends GenericFilter {
@@ -18,29 +22,32 @@ public class JwtAuthFilter extends GenericFilter {
 
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-      throws IOException, ServletException {
+          throws IOException, ServletException {
 
     HttpServletRequest req = (HttpServletRequest) request;
     Cookie[] cookies = req.getCookies();
 
-    if (cookies == null) {
-      chain.doFilter(request, response);
-      return;
-    }
+    if (cookies != null) {
+      for (Cookie cookie : cookies) {
+        if ("jwt".equals(cookie.getName())) {
+          String token = cookie.getValue();
+          try {
+            jwtUtil.validateToken(token);
+            String username = jwtUtil.getUsernameFromToken(token);
+            String role = jwtUtil.getRoleFromToken(token);
 
-    for (Cookie cookie : cookies) {
-      if ("jwt".equals(cookie.getName())) {
-        String token = cookie.getValue();
-        try {
-          jwtUtil.validateToken(token);
-          String username = jwtUtil.getUsernameFromToken(token);
-          String role = jwtUtil.getRoleFromToken(token);
-          req.setAttribute("username", username);
-          req.setAttribute("role", role);
-        } catch (JwtException e) {
-          // Invalid token, do nothing
+            // Build an Authentication object
+            var authority = new SimpleGrantedAuthority("ROLE_" + role.toUpperCase());
+            var auth = new UsernamePasswordAuthenticationToken(username, null, Collections.singleton(authority));
+
+            // Register in security context
+            SecurityContextHolder.getContext().setAuthentication(auth);
+          } catch (JwtException e) {
+            // Token invalid: clear any existing context just in case
+            SecurityContextHolder.clearContext();
+          }
+          break;
         }
-        break;
       }
     }
 
