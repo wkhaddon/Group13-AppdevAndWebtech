@@ -1,8 +1,42 @@
+import styles from './About.module.scss';
+
 function About() {
 	return (
-		<section>
-			<h1>About</h1>
-		</section>
+		<div className={styles.about}>
+			<section className={styles.hero}>
+				<h1>About Learniverse Connect</h1>
+				<p>We build bridges between learning and possibilities</p>
+			</section>
+
+			<section className={styles.story}>
+				<h2>Our History</h2>
+				<p>Started as a school project in 2025</p>
+			</section>
+
+			<section className={styles.values}>
+				<h2>Our Values</h2>
+				<ul>
+					<li>Innovation in learning</li>
+					<li>Quality in education</li>
+					<li>Accessibility for all</li>
+				</ul>
+			</section>
+
+			<section className={styles.team}>
+				<h2>Our Team</h2>
+				<div className={styles.teamGrid}>
+					<article className={styles.teamMember}>
+						<h3>William Haddon</h3>
+						<p>Developer</p>
+					</article>
+					<article className={styles.teamMember}>
+						<h3>Elias Einarsen</h3>
+						<p>Developer</p>
+					</article>
+				</div>
+			</section>
+		</div>
+
 	);
 }
 

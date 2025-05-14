@@ -19,6 +19,14 @@ function Features() {
 				<h2>Affordable Prices</h2>
 				<p>Access high-quality courses at an affordable cost.</p>
 			</article>
+			<article className={styles.feature}>
+				<h2>Interactive Learning</h2>
+				<p>Engage with interactive content and hands-on projects.</p>
+			</article>
+			<article className={styles.feature}>
+				<h2>Mobile Friendly</h2>
+				<p>Learn on the go with our mobile-friendly platform.</p>
+			</article>
 		</section>
 	);
 }
