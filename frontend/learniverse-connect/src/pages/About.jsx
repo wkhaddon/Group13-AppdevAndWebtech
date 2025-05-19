@@ -8,18 +8,20 @@ function About() {
 				<p>We build bridges between learning and possibilities</p>
 			</section>
 
-			<section className={styles.story}>
-				<h2>Our History</h2>
-				<p>Started as a school project in 2025</p>
-			</section>
+			<section className={styles.cards}>
+				<section className={styles.story}>
+					<h2>Our History</h2>
+					<p>Started as a school project in 2025</p>
+				</section>
 
-			<section className={styles.values}>
-				<h2>Our Values</h2>
-				<ul>
-					<li>Innovation in learning</li>
-					<li>Quality in education</li>
-					<li>Accessibility for all</li>
-				</ul>
+				<section className={styles.values}>
+					<h2>Our Values</h2>
+					<ul>
+						<li>Innovation in learning</li>
+						<li>Quality in education</li>
+						<li>Accessibility for all</li>
+					</ul>
+				</section>
 			</section>
 
 			<section className={styles.team}>

@@ -3,42 +3,59 @@ import api from '@/api/axios';
 
 const AuthContext = createContext({
 	isLoggedIn: false,
+	role: null,
 	login: () => {},
 	logout: () => {},
 });
 
+export const Role = {
+	User: 'ROLE_USER',
+	Provider: 'ROLE_PROVIDER',
+	Support: 'ROLE_SUPPORT',
+	Admin: 'ROLE_ADMIN',
+};
+
 async function checkAuth() {
 	try {
-		await api.get('/auth/validate');
-		return true;
+		const response = await api.get('/auth/validate');
+		return {
+			authenticated: true,
+			role: response.data?.role || 'ROLE_USER', // default fallback
+		};
 	} catch {
-		return false;
+		return {
+			authenticated: false,
+			role: null,
+		};
 	}
 }
 
 export const AuthProvider = ({ children }) => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [role, setRole] = useState(null);
 
 	const login = () => setIsLoggedIn(true);
 	const logout = () => {
-		api.post('/auth/logout')
+		api.post('/auth/logout');
 		setIsLoggedIn(false);
-	}
+		setRole(null);
+	};
 
 	useEffect(() => {
 		const validateAuth = async () => {
-			const isAuthenticated = await checkAuth();
-			setIsLoggedIn(isAuthenticated);
+			const { authenticated, role } = await checkAuth();
+			setIsLoggedIn(authenticated);
+			setRole(role);
 		};
 
 		validateAuth();
 
-		const interval = setInterval(validateAuth, 60000); // Check every minute
+		const interval = setInterval(validateAuth, 60000); // every minute
 		return () => clearInterval(interval);
 	}, []);
 
 	return (
-		<AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+		<AuthContext.Provider value={{ isLoggedIn, role, login, logout }}>
 			{children}
 		</AuthContext.Provider>
 	);

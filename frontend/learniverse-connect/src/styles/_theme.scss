@@ -46,13 +46,11 @@ $common: (
 	font-mono: $font-mono,
 );
 
-:root {
+body {
 	@include export($light-theme);
 	@include export($common);
 }
 
-@media (prefers-color-scheme: dark) {
-	:root {
-		@include export($dark-theme);
-	}
+body[data-theme='dark'] {
+	@include export($dark-theme);
 }

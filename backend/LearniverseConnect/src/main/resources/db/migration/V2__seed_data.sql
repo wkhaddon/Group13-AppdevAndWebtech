@@ -1,9 +1,10 @@
 -- USERS
 insert into users (id, email, username, password_hash, global_role)
 values
-    (1, 'user@example.com', 'User', 'hashedpass1', 'USER'),
-    (2, 'support@example.com', 'Support', 'hashedpass2', 'SUPPORT'),
-    (3, 'admin@example.com', 'Admin', 'hashedpass3', 'ADMIN')
+    (1, 'user@example.com', 'User', '$2a$10$GTnB4a1aZXVT64Veo5nPf.lx4YhT9mjrg2xObK/l0Wbh4dz5XLmwK', 'USER'), -- pw: UserPassword
+    (2, 'provider@example.com', 'Provider', '$2a$10$EdxgE9ydaXT4CIModUyxi.rgvryN/icS0xCLwV0U/CVzp0c812uDe', 'PROVIDER'), -- pw: ProviderPassword
+    (3, 'support@example.com', 'Support', '$2a$10$i/8oK3xv1N7fK296Te26LuVfsjQobNW9VW6pa8273cQTB/hvITEdu', 'SUPPORT'), -- pw: SupportPassword
+    (4, 'admin@example.com', 'Admin', '$2a$10$88UWNteGU8qH4VIdDKwKb.1FPbyAOMcJ5A4..26WgrehHkmXX9mOS', 'ADMIN') -- pw: AdminPassword
 ON CONFLICT DO NOTHING;
 
 -- ORGANIZATIONS

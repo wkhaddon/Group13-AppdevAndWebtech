@@ -134,3 +134,24 @@
 		display: block;
 	}
 }
+
+.themeToggle {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 2rem;
+	height: 2rem;
+	background-color: var(--primary);
+	border-radius: $radius-md;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+
+	&:hover {
+		background-color: var(--primary-hover);
+	}
+
+	&:focus {
+		outline: 2px dashed var(--primary-hover);
+		outline-offset: 2px;
+	}
+}

@@ -8,7 +8,7 @@ create table users (
     username varchar(255) not null unique,
     password_hash varchar(255) not null,
     global_role varchar(255) not null
-       check (global_role in ('USER', 'SUPPORT', 'ADMIN')) default 'USER',
+       check (global_role in ('USER', 'PROVIDER', 'SUPPORT', 'ADMIN')) default 'USER',
     created_at timestamp not null default now(),
     updated_at timestamp
 );

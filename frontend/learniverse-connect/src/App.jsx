@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 
 import ProtectedRoute from './components/ProtectedRoute';
+import { Role } from './context/AuthContext';
 
 import Header from './components/Header';
 import CallToAction from './components/CallToAction';
@@ -15,6 +16,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 
 import NotFound from './pages/NotFound';
+import Forbidden from './pages/Forbidden';
 
 function App() {
 	return (
@@ -25,24 +27,60 @@ function App() {
 				<Routes>
 					<Route path="/" element={<Home />} />
 					<Route path="/courses" element={<Courses />} />
+
+					{/* User-specific routes */}
 					<Route
 						path="/favorites"
 						element={
-							<ProtectedRoute>
+							<ProtectedRoute requiredRoles={[Role.User]}>
 								<Favorites />
 							</ProtectedRoute>
 						}
 					/>
+
+					{/* Provider-specific routes */}
+					<Route
+						path="/provider"
+						element={
+							<ProtectedRoute requiredRoles={[Role.Provider]}>
+								{/* Provider Panel Component */}
+							</ProtectedRoute>
+						}
+					/>
+
+					{/* Support-specific routes */}
+					<Route
+						path="/support"
+						element={
+							<ProtectedRoute requiredRoles={[Role.Support]}>
+								{/* Support Tools Component */}
+							</ProtectedRoute>
+						}
+					/>
+
+					{/* Admin-specific routes */}
+					<Route
+						path="/admin"
+						element={
+							<ProtectedRoute requiredRoles={[Role.Admin]}>
+								{/* Admin Dashboard Component */}
+							</ProtectedRoute>
+						}
+					/>
+
+					{/* Public routes */}
 					<Route path="/about" element={<About />} />
 
 					{/* Authentication */}
 					<Route path="/login" element={<Login />} />
 					<Route path="/register" element={<Register />} />
 
-					{/* 404 Not Found */}
+					{/* Error */}
 					<Route path="*" element={<NotFound />} />
+					<Route path="/403" element={<Forbidden />} />
 				</Routes>
 			</main>
+
 			<CallToAction />
 			<Footer />
 		</>

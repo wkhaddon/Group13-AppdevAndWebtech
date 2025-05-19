@@ -39,8 +39,8 @@ dependencies {
 }
 
 flyway {
-    url = 'jdbc:postgresql://localhost:5432/learniverse'
-    user = 'postgres'
-    password = 'placeholder' // TODO: replace with env, DO NOT COMMIT WITH REAL PASSWORD
+    url = System.getenv("POSTGRES_URL")
+    user = System.getenv("POSTGRES_USER")
+    password = System.getenv("POSTGRES_PASSWORD")
+    cleanDisabled = false
 }
-
