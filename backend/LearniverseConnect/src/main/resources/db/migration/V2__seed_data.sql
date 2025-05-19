@@ -21,17 +21,17 @@ values
 ON CONFLICT DO NOTHING;
 
 -- CATEGORIES
-insert into categories (category_id, name, description)
+insert into categories (id, name, description)
 values
     (1, 'Programming', 'Coding and software development'),
     (2, 'Math', 'Mathematics and statistics')
 ON CONFLICT DO NOTHING;
 
 -- COURSES
-insert into courses (title, description, level, price, is_hidden, category_id, provider_id)
+insert into courses (id, title, description, level, price, is_hidden, category_id, provider_id)
 values
-    ('Intro to Java', 'Learn Java basics', 'BEGINNER', 999.00, false, 1, 1),
-    ('Linear Algebra', 'Vectors and matrices', 'INTERMEDIATE', 599.00, true, 2, 2);
+    (1, 'Intro to Java', 'Learn Java basics', 'BEGINNER', 999.00, false, 1, 1),
+    (2, 'Linear Algebra', 'Vectors and matrices', 'INTERMEDIATE', 599.00, true, 2, 2);
 
 -- FAVORITES
 insert into favorites (user_id, course_id)
@@ -42,7 +42,7 @@ values
 ON CONFLICT DO NOTHING;
 
 -- ORDERS
-insert into orders (order_id, user_id, status, total_price)
+insert into orders (id, user_id, status, total_price)
 values
     (1, 1, true, 999.00)
     ON CONFLICT DO NOTHING;
@@ -54,11 +54,28 @@ ON CONFLICT DO NOTHING;
 
 -- RESET SEQUENCES
 
-SELECT setval('orders_order_id_seq', (SELECT MAX(id) FROM orders));
-SELECT setval('order_courses_order_course_id_seq', (SELECT MAX(id) FROM order_courses));
-SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));
-SELECT setval('provider_organizations_id_seq', (SELECT MAX(id) FROM provider_organizations));
-SELECT setval('organization_join_requests_id_seq', (SELECT MAX(id) FROM organization_join_requests));
-SELECT setval('categories_category_id_seq', (SELECT MAX(id) FROM categories));
-SELECT setval('courses_id_seq', (SELECT MAX(id) FROM courses));
-SELECT setval('favorites_favorite_id_seq', (SELECT MAX(id) FROM favorites));
+DO
+$$
+    DECLARE
+        seq RECORD;
+    BEGIN
+        FOR seq IN
+            SELECT
+                pg_class.relname AS sequence_name,
+                'SELECT setval(' ||
+                quote_literal(pg_class.relname) ||
+                ', COALESCE(MAX(' || column_name || '), 1)) FROM ' || table_name AS reset_sql
+            FROM
+                pg_class
+                    JOIN
+                pg_namespace ON pg_namespace.oid = pg_class.relnamespace
+                    JOIN
+                information_schema.columns ON
+                    columns.column_default LIKE ('nextval(' || quote_literal(pg_class.relname) || '::regclass)%')
+            WHERE
+                pg_class.relkind = 'S'  -- sequences only
+            LOOP
+                EXECUTE seq.reset_sql;
+            END LOOP;
+    END;
+$$;

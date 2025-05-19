@@ -58,7 +58,7 @@ create table organization_join_requests (
 -- ==============================
 
 create table categories (
-    category_id bigserial primary key,
+    id bigserial primary key,
     name varchar(255) not null unique,
     description text
 );
@@ -79,7 +79,7 @@ create table courses (
      ects_credits numeric(38,2),
      hours_per_week numeric(38,2),
      related_certification varchar(255),
-     category_id bigint not null references categories(category_id),
+     category_id bigint not null references categories(id),
      provider_id bigint not null references provider_organizations(id)
 );
 
@@ -98,7 +98,7 @@ create table favorites (
 -- ==============================
 
 create table orders (
-    order_id bigserial primary key,
+    id bigserial primary key,
     user_id bigint not null references users(id) on delete cascade,
     order_date timestamp not null default now(),
     status boolean not null, -- consider changing to enum in future
@@ -106,8 +106,8 @@ create table orders (
 );
 
 create table order_courses (
-    order_course_id bigserial primary key,
-    order_id bigint not null references orders(order_id) on delete cascade,
+    id bigserial primary key,
+    order_id bigint not null references orders(id) on delete cascade,
     course_id bigint not null references courses(id),
     quantity integer
 );

@@ -9,7 +9,6 @@ import lombok.Getter;
 public class OrderCourse {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "order_course_id")
   private Long id;
 
   @ManyToOne
