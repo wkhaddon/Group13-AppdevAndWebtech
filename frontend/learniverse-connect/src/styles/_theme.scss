@@ -8,7 +8,9 @@
 
 $light-theme: (
 	bg: $color-bg-light,
+	hero: $color-hero-light,
 	surface: $color-surface-light,
+	surface2: $color-surface-light2,
 	surface-hover: $color-surface-hover-light,
 	overlay: $color-overlay-light,
 	header: $color-header-light,
@@ -22,9 +24,11 @@ $light-theme: (
 
 $dark-theme: (
 	bg: $color-bg-dark,
+	hero: $color-hero-dark,
 	header: $color-header-dark,
 	footer: $color-footer-dark,
 	surface: $color-surface-dark,
+	surface2: $color-surface-dark2,
 	surface-hover: $color-surface-hover-dark,
 	primary: $color-primary-dark,
 	primary-hover: $color-primary-dark-hover,

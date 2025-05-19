@@ -10,7 +10,7 @@ $color-danger-hover: color.adjust($color-danger, $lightness: -10%);
 $color-header: #005377;
 
 $color-hero-light: #fff;
-$color-hero-dark: #404040;
+$color-hero-dark: #555555;
 
 $color-footer: #052f5f;
 
@@ -35,8 +35,8 @@ $color-text-light: #f8f9fa;
 $color-text-secondary-light: #6c757d;
 
 // COLOR TOKENS (DARK THEME)
-$color-bg-dark: #121212;
-$color-surface-dark: #1e1e1e;
+$color-bg-dark: #252525;
+$color-surface-dark: #454545;
 $color-surface-hover-dark: color.adjust($color-surface-dark, $lightness: -2%);
 $color-overlay-dark: rgba(255, 255, 255, 0.05);
 
