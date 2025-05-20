@@ -98,10 +98,10 @@ public class AuthController {
   private ResponseCookie createJwtCookie(String jwt) {
     return ResponseCookie.from("jwt", jwt)
         .httpOnly(true)
-        .secure(false) // TODO: Set to true in production
+        .secure(true)
         .path("/")
         .maxAge(Duration.ofDays(1))
-        .sameSite("Strict")
+        .sameSite("None")
         .build();
   }
 }

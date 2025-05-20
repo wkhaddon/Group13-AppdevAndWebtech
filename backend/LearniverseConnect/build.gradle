@@ -38,9 +38,15 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
 }
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
 flyway {
-    url = System.getenv("POSTGRES_URL")
-    user = System.getenv("POSTGRES_USER")
-    password = System.getenv("POSTGRES_PASSWORD")
+    url = System.getenv("FLYWAY_DB_URL")
+    user = System.getenv("FLYWAY_DB_USER")
+    password = System.getenv("FLYWAY_DB_PASSWORD")
     cleanDisabled = false
 }
