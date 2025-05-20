@@ -43,9 +43,20 @@ function Courses() {
 					onChange={(e) => setSearchQuery(e.target.value)}
 					className={styles.searchInput}
 				/>
-				<button onClick={handleSearch} className={styles.searchButton}>
-					Search
-				</button>
+				<div className={styles.buttonRow}>
+					<button onClick={handleSearch} className={styles.searchButton}>
+						Search
+					</button>
+					<button
+						onClick={() => {
+							setSearchQuery('');
+							setSubmittedQuery('');
+						}}
+						className={styles.showAllButton}
+					>
+						Show All Courses
+					</button>
+				</div>
 			</div>
 
 			{loading && <p>Loading courses...</p>}
