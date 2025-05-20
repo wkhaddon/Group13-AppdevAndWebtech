@@ -18,12 +18,13 @@
 }
 
 .courseList {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-	gap: 1.5rem;
-	padding: 2rem;
+	width: 100%;
 	max-width: 1200px;
-	margin: 0 auto;
+	padding: 1rem;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 1.5rem;
+	justify-content: center;
 }
 
 .courseCard {
@@ -115,4 +116,12 @@
 
 .showAllButton:hover {
 	background-color: var(--primary-hover);
+}
+
+.container {
+	max-width: 100%;
+	padding: 1rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }

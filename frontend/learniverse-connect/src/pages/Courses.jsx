@@ -33,7 +33,7 @@ function Courses() {
 	};
 
 	return (
-		<section className={styles.courses}>
+		<div className={styles.container}>
 			<div className={styles.searchBox}>
 				<h2 className={styles.searchTitle}>Search Courses</h2>
 				<input
@@ -72,7 +72,7 @@ function Courses() {
 					</article>
 				))}
 			</div>
-		</section>
+		</div>
 	);
 }
 
