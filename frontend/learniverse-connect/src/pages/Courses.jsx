@@ -1,124 +1,150 @@
 import styles from './Courses.module.scss';
 import { useEffect, useState } from 'react';
+import Slider from '@mui/material/Slider';
 import api from '@/api/axios';
+import { useSearchParams } from 'react-router-dom';
+
+import CourseCard from '@/components/CourseCard';
+
+const MIN = 0;
 
 function Courses() {
-	const [courses, setCourses] = useState([]);
-	const [category, setCategory] = useState('');
-	const [minPrice, setMinPrice] = useState('');
-	const [maxPrice, setMaxPrice] = useState('');
-	const [categories, setCategories] = useState([]);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState(null);
-	const [searchQuery, setSearchQuery] = useState('');
-	const [submittedQuery, setSubmittedQuery] = useState('');
+const [courses, setCourses] = useState([]);
+const [category, setCategory] = useState('');
+const [categories, setCategories] = useState([]);
+const [searchQuery, setSearchQuery] = useState('');
+const [maxCoursePrice, setMaxCoursePrice] = useState(10000);
+const [priceRange, setPriceRange] = useState([MIN, 10000]);
+const [loading, setLoading] = useState(false);
+const [error, setError] = useState(null);
+const [searchParams, setSearchParams] = useSearchParams();
 
-	useEffect(() => {
-		api.get('/categories')
-			.then(res => setCategories(res.data))
-			.catch(err => console.error('Failed to load categories', err));
-	}, []);
+useEffect(() => {
+	api.get('/categories')
+	.then(res => setCategories(res.data))
+	.catch(err => console.error('Failed to load categories', err));
+}, []);
 
-	useEffect(() => {
-		const params = new URLSearchParams();
+useEffect(() => {
+	api.get('/courses')
+	.then(res => {
+		const prices = res.data.map(course => parseFloat(course.price)).filter(p => !isNaN(p));
+		const max = prices.length ? Math.ceil(Math.max(...prices)) : 1000;
+		setMaxCoursePrice(max);
+		setPriceRange([MIN, max]);
+	})
+	.catch(err => console.error('Failed to determine max price', err));
+}, []);
 
-		if (submittedQuery) params.append('q', submittedQuery);
-		if (category) params.append('category', category);
-		if (minPrice) params.append('minPrice', minPrice);
-		if (maxPrice) params.append('maxPrice', maxPrice);
+useEffect(() => {
+	const query = searchParams.get('q') || '';
+	const cat = searchParams.get('category') || '';
+	const min = parseFloat(searchParams.get('minPrice'));
+	const max = parseFloat(searchParams.get('maxPrice'));
 
-		const endpoint = `/courses/search?${params.toString()}`;
+	setSearchQuery(query);
+	setCategory(cat);
+	setPriceRange([
+	!isNaN(min) ? min : MIN,
+	!isNaN(max) ? max : maxCoursePrice
+	]);
 
-		setLoading(true);
-		api.get(endpoint)
-			.then((response) => {
-				setCourses(response.data);
-			})
-			.catch((err) => {
-				console.error('Failed to fetch courses:', err);
-				setError('Failed to load courses.');
-			})
-			.finally(() => {
-				setLoading(false);
-			});
-	}, [submittedQuery, category, minPrice, maxPrice]);
+	const params = new URLSearchParams();
+	if (query) params.append('q', query);
+	if (cat) params.append('category', cat);
+	if (!isNaN(min) && min > MIN) params.append('minPrice', min);
+	if (!isNaN(max) && max < maxCoursePrice) params.append('maxPrice', max);
 
-	const handleSearch = () => {
-		setSubmittedQuery(searchQuery);
-	};
+	const endpoint = `/courses/search?${params.toString()}`;
+	setLoading(true);
+	api.get(endpoint)
+	.then((response) => {
+		setCourses(response.data);
+		setError(null);
+	})
+	.catch((err) => {
+		console.error('Failed to fetch courses:', err);
+		setError('Failed to load courses.');
+	})
+	.finally(() => setLoading(false));
+}, [searchParams, maxCoursePrice]);
 
-	return (
-		<div className={styles.container}>
-			<div className={styles.searchBox}>
-				<h2 className={styles.searchTitle}>Search Courses</h2>
-				<input
-					type="text"
-					placeholder="Search courses..."
-					value={searchQuery}
-					onChange={(e) => setSearchQuery(e.target.value)}
-					className={styles.searchInput}
-				/>
+const handleSearch = () => {
+	const params = {};
+	if (searchQuery) params.q = searchQuery;
+	if (category) params.category = category;
+	if (priceRange[0] > MIN) params.minPrice = priceRange[0];
+	if (priceRange[1] < maxCoursePrice) params.maxPrice = priceRange[1];
+	setSearchParams(params);
+};
 
-				<select
-					value={category}
-					onChange={(e) => setCategory(e.target.value)}
-					className={styles.dropdown}
-				>
-					<option value="">All Categories</option>
-					{categories.map((cat) => (
-						<option key={cat.id} value={cat.id}>
-							{cat.name}
-						</option>
-					))}
-				</select>
+const handleReset = () => {
+	setSearchQuery('');
+	setCategory('');
+	setPriceRange([MIN, maxCoursePrice]);
+	setSearchParams({});
+};
 
-				<input
-					type="number"
-					placeholder="Min Price"
-					value={minPrice}
-					onChange={(e) => setMinPrice(e.target.value)}
-					className={styles.priceInput}
-				/>
+return (
+	<div className={styles.container}>
+	<aside className={styles.searchBox}>
+		<h2 className={styles.searchTitle}>Filter Courses</h2>
 
-				<input
-					type="number"
-					placeholder="Max Price"
-					value={maxPrice}
-					onChange={(e) => setMaxPrice(e.target.value)}
-					className={styles.priceInput}
-				/>
+		<input
+		type="text"
+		placeholder="Search courses..."
+		value={searchQuery}
+		onChange={(e) => setSearchQuery(e.target.value)}
+		className={styles.searchInput}
+		/>
 
-				<div className={styles.buttonRow}>
-					<button onClick={handleSearch} className={styles.searchButton}>
-						Search
-					</button>
-					<button
-						onClick={() => {
-							setSearchQuery('');
-							setSubmittedQuery('');
-						}}
-						className={styles.showAllButton}
-					>
-						Show All Courses
-					</button>
-				</div>
-			</div>
+		<select
+		value={category}
+		onChange={(e) => setCategory(e.target.value)}
+		className={styles.dropdown}
+		>
+		<option value="">All Categories</option>
+		{categories.map((cat) => (
+			<option key={cat.id} value={cat.id}>{cat.name}</option>
+		))}
+		</select>
 
-			{loading && <p>Loading courses...</p>}
-			{error && <p>{error}</p>}
-			{!loading && !error && courses.length === 0 && <p>No courses found.</p>}
+		<div className={styles.rangeSlider}>
+		<label>Price Range: {priceRange[0]} - {priceRange[1]}</label>
+		<Slider
+			value={priceRange}
+			onChange={(_, newValue) => setPriceRange(newValue)}
+			valueLabelDisplay="auto"
+			min={MIN}
+			max={maxCoursePrice}
+		/>
+		</div>
+
+		<div className={styles.buttonRow}>
+		<button onClick={handleSearch} className={styles.searchButton}>Search</button>
+		<button onClick={handleReset} className={styles.showAllButton}>Reset Filters</button>
+		</div>
+	</aside>
+
+	<main>
+		{loading && <p>Loading courses...</p>}
+
+		{error ? (
+		<p className={styles.error}>{error}</p>
+		) : (
+		<>
+			{!loading && courses.length === 0 && <p>No courses found.</p>}
 
 			<div className={styles.courseList}>
-				{courses.map((course) => (
-					<article key={course.id} className={styles.courseCard}>
-						<h2 className={styles.courseTitle}>{course.title}</h2>
-						<p className={styles.courseDescription}>{course.description}</p>
-						<p className={styles.courseLevel}>Level: {course.level}</p>
-					</article>
-				))}
+			{courses.map((course) => (
+				<CourseCard key={course.id} course={course} />
+			))}
 			</div>
-		</div>
-	);
+		</>
+		)}
+	</main>
+	</div>
+);
 }
 
 export default Courses;
