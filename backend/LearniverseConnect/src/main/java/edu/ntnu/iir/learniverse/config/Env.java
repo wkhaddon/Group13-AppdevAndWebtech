@@ -11,6 +11,9 @@ public final class Env {
   public static String get(EnvVar key) {
     String value = System.getProperty(key.name());
     if (value == null) {
+        value = System.getenv(key.name());
+    }
+    if (value == null) {
       throw new IllegalStateException("Missing required env var: " + key.name());
     }
     return value;
