@@ -71,16 +71,17 @@ function Header() {
 							<Link to="/register" className={styles.register} onClick={closeMenu}>Register</Link>
 						</>
 					)}
+					<button
+						onClick={handleThemeToggle}
+						className={styles.themeToggle}
+						id="theme-toggle"
+						aria-label="Toggle theme"
+					>
+						{themeIcon}
+					</button>
 				</nav>
 
-				<button
-					onClick={handleThemeToggle}
-					className={styles.themeToggle}
-					id="theme-toggle"
-					aria-label="Toggle theme"
-				>
-					{themeIcon}
-				</button>
+
 			</div>
 		</header>
 	);

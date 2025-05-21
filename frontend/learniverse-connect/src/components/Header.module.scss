@@ -96,7 +96,7 @@
 	cursor: pointer;
 	position: absolute;
 	right: 1rem;
-	top: 1.5rem;
+	top: 2rem;
 	z-index: 1100;
 }
 
@@ -107,9 +107,7 @@
 	}
 
 	.nav {
-		flex-direction: column;
-		align-items: flex-start;
-		width: 100%;
+		width: 50vw;
 		background-color: var(--header);
 		padding: 1rem;
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -117,7 +115,8 @@
 		border-bottom-right-radius: $radius-md;
 		position: absolute;
 		top: 100%;
-		left: 0;
+		left: auto;
+		right: 0;
 		display: none;
 		opacity: 0;
 		transform: translateY(-10px);
@@ -128,6 +127,10 @@
 		display: flex;
 		opacity: 1;
 		transform: translateY(0);
+		align-items: flex-end;
+		padding-right: 1rem;
+		box-sizing: border-box;
+		width: 100%;
 	}
 
 	.hamburger {
@@ -145,6 +148,7 @@
 	border-radius: $radius-md;
 	cursor: pointer;
 	transition: background-color 0.3s ease;
+	border: none;
 
 	&:hover {
 		background-color: var(--primary-hover);
