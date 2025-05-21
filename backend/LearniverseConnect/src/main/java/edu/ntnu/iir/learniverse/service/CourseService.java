@@ -24,12 +24,20 @@ public class CourseService {
         .toList();
   }
 
-  public Optional<Course> getCourseById(Long id) {
-    return courseRepository.findById(id);
+  public Optional<CourseResponse> getCourseById(Long id) {
+    Optional<Course> course = courseRepository.findById(id);
+    return course.map(CourseResponse::new);
   }
 
-  public List<Course> searchCourses(String query) {
-    return courseRepository.findByTitleContainingIgnoreCase(query);
+  public List<CourseResponse> searchCourses(String query, Long categoryId, Double minPrice, Double maxPrice) {
+    if (query == null && categoryId == null && minPrice == null && maxPrice == null) {
+      return getAllCourses();
+    }
+
+    List<Course> courses = courseRepository.searchCourses(query, categoryId, minPrice, maxPrice);
+    return courses.stream()
+        .map(CourseResponse::new)
+        .toList();
   }
 
   public Course createCourse(Course course) {

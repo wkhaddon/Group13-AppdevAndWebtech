@@ -55,7 +55,7 @@ values
     (10, 'Search Engine Optimization Techniques', 'Learn SEO best practices for better online visibility', 'INTERMEDIATE', 599.00, true, 4, 10),
     (11, 'Data Visualization with Tableau', 'Create stunning visualizations using Tableau', 'EXPERT', 799.00, true, 4, 11),
     (12, 'Cybersecurity Essentials', 'Introduction to cybersecurity principles and practices', 'BEGINNER', 499.00, true, 4, 12)
-
+ON CONFLICT DO NOTHING;
 
 -- FAVORITES
 insert into favorites (user_id, course_id)

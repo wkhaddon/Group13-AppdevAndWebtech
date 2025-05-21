@@ -34,17 +34,26 @@ public class CourseController {
   @ApiResponse(responseCode = "200", description = "Successfully retrieved the course")
   @ApiResponse(responseCode = "404", description = "Course not found")
   @GetMapping("/{id}")
-  public ResponseEntity<Course> getCourseById(@PathVariable Long id) {
+  public ResponseEntity<CourseResponse> getCourseById(@PathVariable Long id) {
     return courseService.getCourseById(id)
         .map(ResponseEntity::ok)
         .orElse(ResponseEntity.notFound().build());
   }
 
-  @Operation(summary = "Search courses", description = "Search for courses by a query string")
+  @Operation(
+      summary = "Search courses",
+      description = "Search for courses by query, category, and optional price range"
+  )
   @ApiResponse(responseCode = "200", description = "Successfully retrieved search results")
+  @ApiResponse(responseCode = "400", description = "Invalid query parameters")
   @GetMapping("/search")
-  public List<Course> searchCourses(@RequestParam("q") String query) {
-    return courseService.searchCourses(query);
+  public List<CourseResponse> searchCourses(
+      @RequestParam(name = "q", required = false) String query,
+      @RequestParam(name = "category", required = false) Long categoryId,
+      @RequestParam(name = "minPrice", required = false) Double minPrice,
+      @RequestParam(name = "maxPrice", required = false) Double maxPrice
+  ) {
+    return courseService.searchCourses(query, categoryId, minPrice, maxPrice);
   }
 
   @Operation(summary = "Create a new course", description = "Add a new course to the system")

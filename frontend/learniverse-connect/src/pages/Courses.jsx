@@ -4,15 +4,30 @@ import api from '@/api/axios';
 
 function Courses() {
 	const [courses, setCourses] = useState([]);
+	const [category, setCategory] = useState('');
+	const [minPrice, setMinPrice] = useState('');
+	const [maxPrice, setMaxPrice] = useState('');
+	const [categories, setCategories] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [searchQuery, setSearchQuery] = useState('');
 	const [submittedQuery, setSubmittedQuery] = useState('');
 
 	useEffect(() => {
-		const endpoint = submittedQuery
-			? `/courses/search?q=${encodeURIComponent(submittedQuery)}`
-			: '/courses';
+		api.get('/categories')
+			.then(res => setCategories(res.data))
+			.catch(err => console.error('Failed to load categories', err));
+	}, []);
+
+	useEffect(() => {
+		const params = new URLSearchParams();
+
+		if (submittedQuery) params.append('q', submittedQuery);
+		if (category) params.append('category', category);
+		if (minPrice) params.append('minPrice', minPrice);
+		if (maxPrice) params.append('maxPrice', maxPrice);
+
+		const endpoint = `/courses/search?${params.toString()}`;
 
 		setLoading(true);
 		api.get(endpoint)
@@ -26,7 +41,7 @@ function Courses() {
 			.finally(() => {
 				setLoading(false);
 			});
-	}, [submittedQuery]);
+	}, [submittedQuery, category, minPrice, maxPrice]);
 
 	const handleSearch = () => {
 		setSubmittedQuery(searchQuery);
@@ -43,6 +58,36 @@ function Courses() {
 					onChange={(e) => setSearchQuery(e.target.value)}
 					className={styles.searchInput}
 				/>
+
+				<select
+					value={category}
+					onChange={(e) => setCategory(e.target.value)}
+					className={styles.dropdown}
+				>
+					<option value="">All Categories</option>
+					{categories.map((cat) => (
+						<option key={cat.id} value={cat.id}>
+							{cat.name}
+						</option>
+					))}
+				</select>
+
+				<input
+					type="number"
+					placeholder="Min Price"
+					value={minPrice}
+					onChange={(e) => setMinPrice(e.target.value)}
+					className={styles.priceInput}
+				/>
+
+				<input
+					type="number"
+					placeholder="Max Price"
+					value={maxPrice}
+					onChange={(e) => setMaxPrice(e.target.value)}
+					className={styles.priceInput}
+				/>
+
 				<div className={styles.buttonRow}>
 					<button onClick={handleSearch} className={styles.searchButton}>
 						Search

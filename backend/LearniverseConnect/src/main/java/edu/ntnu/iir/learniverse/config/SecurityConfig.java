@@ -40,7 +40,7 @@ public class SecurityConfig {
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration config = new CorsConfiguration();
     config.setAllowedOriginPatterns(List.of(
-            "https://localhost",
+            "http://localhost:5173",
             "https://wkhaddon.github.io"));
     config.addAllowedMethod("*");
     config.addAllowedHeader("*");

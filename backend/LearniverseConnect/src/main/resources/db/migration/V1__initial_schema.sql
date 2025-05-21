@@ -59,7 +59,7 @@ create table organization_join_requests (
 
 create table categories (
     id bigserial primary key,
-    name varchar(255) not null unique,
+    name varchar(255) not null unique
 );
 
 -- ==============================
