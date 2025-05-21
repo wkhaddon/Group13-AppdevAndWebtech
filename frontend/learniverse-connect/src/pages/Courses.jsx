@@ -28,7 +28,7 @@ function Courses() {
 
 	// Fetch max price to initialize slider range
 	useEffect(() => {
-		api.get('/courses/max-price')
+		api.get('/courses/maxPrice')
 			.then(res => {
 				const max = Math.ceil(parseFloat(res.data));
 				setMaxCoursePrice(max);
