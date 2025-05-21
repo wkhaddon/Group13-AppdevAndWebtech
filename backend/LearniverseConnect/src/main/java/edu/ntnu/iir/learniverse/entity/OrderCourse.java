@@ -12,10 +12,12 @@ public class OrderCourse {
   private Long id;
 
   @ManyToOne
+  @JsonIgnore
   @JoinColumn(name = "order_id")
   private Order order;
 
   @ManyToOne
+  @JsonIgnore
   @JoinColumn(name = "course_id")
   private Course course;
 

@@ -25,6 +25,7 @@ public class OrganizationJoinRequest {
   private LocalDateTime submittedAt;
 
   @ManyToOne
+  @JsonIgnore
   @JoinColumn(name = "requested_by")
   private User requestedBy;
 }

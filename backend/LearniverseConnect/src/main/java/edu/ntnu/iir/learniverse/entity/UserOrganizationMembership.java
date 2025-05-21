@@ -12,11 +12,13 @@ import java.time.LocalDateTime;
 public class UserOrganizationMembership {
   @Id
   @ManyToOne
+  @JsonIgnore
   @JoinColumn(name = "user_id")
   private User user;
 
   @Id
   @ManyToOne
+  @JsonIgnore
   @JoinColumn(name = "organization_id")
   private ProviderOrganization organization;
 
