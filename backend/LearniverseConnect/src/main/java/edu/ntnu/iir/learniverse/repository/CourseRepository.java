@@ -24,4 +24,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
       @Param("maxPrice") Double maxPrice
   );
 
+  @Query("SELECT MAX(c.price) FROM Course c")
+  Long getMaxPrice();
+
 }

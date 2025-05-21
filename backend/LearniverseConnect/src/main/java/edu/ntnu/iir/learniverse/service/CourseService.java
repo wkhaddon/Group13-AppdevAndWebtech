@@ -40,6 +40,10 @@ public class CourseService {
         .toList();
   }
 
+  public Long getMaxPrice() {
+    return courseRepository.getMaxPrice();
+  }
+
   public Course createCourse(Course course) {
     return courseRepository.save(course);
   }

@@ -70,7 +70,7 @@ public class AuthController {
         .secure(true)
         .path("/")
         .maxAge(0)
-        .sameSite("Strict")
+        .sameSite("None")
         .build();
 
     return ResponseEntity.ok()

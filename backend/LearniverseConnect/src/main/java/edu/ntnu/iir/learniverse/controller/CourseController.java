@@ -64,6 +64,13 @@ public class CourseController {
     return ResponseEntity.status(HttpStatus.CREATED).body(createdCourse);
   }
 
+  @Operation(summary = "Get the maximum price of courses", description = "Retrieve the maximum price of courses")
+  @ApiResponse(responseCode = "200", description = "Successfully retrieved the maximum price")
+  @GetMapping("/maxPrice")
+  public ResponseEntity<Long> getMaxPrice() {
+    return ResponseEntity.ok(courseService.getMaxPrice());
+  }
+
   @Operation(summary = "Delete a course", description = "Delete a course by its ID")
   @ApiResponse(responseCode = "204", description = "Successfully deleted the course")
   @DeleteMapping("/{id}")
