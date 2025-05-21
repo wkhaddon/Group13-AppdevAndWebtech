@@ -41,10 +41,12 @@ public class Course {
   private String relatedCertification;
 
   @ManyToOne
+  @JsonIgnore
   @JoinColumn(name = "category_id")
   private Category category;
 
   @ManyToOne
+  @JsonIgnore
   @JoinColumn(name = "provider_id")
   private ProviderOrganization provider;
 }

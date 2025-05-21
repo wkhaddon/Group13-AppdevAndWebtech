@@ -16,6 +16,7 @@ public class Order {
   private Long id;
 
   @ManyToOne
+  @JsonIgnore
   @JoinColumn(name = "user_id")
   private User user;
 

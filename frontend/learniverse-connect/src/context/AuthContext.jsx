@@ -34,7 +34,19 @@ export const AuthProvider = ({ children }) => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [role, setRole] = useState(null);
 
-	const login = () => setIsLoggedIn(true);
+	const login = async (credentials) => {
+		try {
+			await api.post('/auth/login', credentials);
+			const { authenticated, role } = await checkAuth();
+			setIsLoggedIn(authenticated);
+			setRole(role);
+		}
+		catch {
+			setIsLoggedIn(false);
+			setRole(null);
+		}
+	};
+
 	const logout = () => {
 		api.post('/auth/logout');
 		setIsLoggedIn(false);
