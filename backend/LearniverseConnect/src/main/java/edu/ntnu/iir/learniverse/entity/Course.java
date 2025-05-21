@@ -2,7 +2,7 @@ package edu.ntnu.iir.learniverse.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
