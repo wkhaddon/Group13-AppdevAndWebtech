@@ -34,6 +34,14 @@ public class SecurityConfig {
       "/api/auth/**",
   };
 
+  private static final String[] SWAGGER_ENDPOINTS = {
+      "/v3/api-docs/**",
+      "/swagger-ui.html",
+      "/swagger-ui/**",
+      "/swagger-resources/**",
+      "/webjars/**"
+  };
+
   /**
    * Bean for password encoding.
    *
@@ -60,6 +68,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS).permitAll()
                 .requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINTS).permitAll()
+                .requestMatchers(SWAGGER_ENDPOINTS).permitAll()
                 .anyRequest().authenticated()
         )
         .cors(Customizer.withDefaults()) // Enable CORS with default settings
