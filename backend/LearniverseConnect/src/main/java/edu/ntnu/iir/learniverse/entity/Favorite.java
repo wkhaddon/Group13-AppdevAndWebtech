@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 public class Favorite {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "favorite_id")
   private Long id;
 
   @ManyToOne
@@ -20,14 +21,6 @@ public class Favorite {
   @JoinColumn(name = "course_id", nullable = false)
   private Course course;
 
-  @Column(name = "created_at", nullable = false, updatable = false)
-  private LocalDateTime createdAt;
-
-  @PrePersist
-  protected void onCreate() {
-    this.createdAt = LocalDateTime.now();
-  }
-
   public Long getId() {
     return id;
   }
@@ -37,11 +30,11 @@ public class Favorite {
   }
 
   public User getUser() {
-        return user;
+    return user;
   }
 
   public void setUser(User user) {
-        this.user = user;
+    this.user = user;
   }
 
   public Course getCourse() {
@@ -52,11 +45,4 @@ public class Favorite {
     this.course = course;
   }
 
-  public LocalDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-  public void setCreatedAt(LocalDateTime createdAt) {
-    this.createdAt = createdAt;
-  }
 }
