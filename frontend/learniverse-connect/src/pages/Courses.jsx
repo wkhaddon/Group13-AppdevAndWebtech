@@ -72,7 +72,7 @@ function Courses() {
 			})
 			.catch((err) => {
 				console.error('Failed to fetch courses:', err);
-				setError('Failed to load courses.');
+				setError('Failed to load courses. Maybe you´re not logged in?');
 			})
 			.finally(() => setLoading(false));
 	}, [searchParams, maxCoursePrice]);

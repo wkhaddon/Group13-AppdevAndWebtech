@@ -21,8 +21,12 @@
 	flex-direction: column;
 	gap: $spacing-md;
 	padding: $spacing-lg;
-	position: sticky;
-	top: $spacing-lg;
+
+	@include respond(sm-up) {
+		position: sticky;
+		top: 12rem;
+	}
+
 }
 
 .searchTitle {
