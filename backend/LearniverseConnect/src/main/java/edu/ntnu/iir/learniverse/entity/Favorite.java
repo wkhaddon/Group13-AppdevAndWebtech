@@ -2,7 +2,6 @@ package edu.ntnu.iir.learniverse.entity;
 
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "favorites")

@@ -5,6 +5,11 @@ import edu.ntnu.iir.learniverse.service.FavoriteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import edu.ntnu.iir.learniverse.dto.FavoriteRequest;
+import edu.ntnu.iir.learniverse.entity.User;
+import edu.ntnu.iir.learniverse.entity.Course;
+import edu.ntnu.iir.learniverse.repository.UserRepository;
+import edu.ntnu.iir.learniverse.repository.CourseRepository;
 
 import java.util.List;
 
@@ -12,9 +17,13 @@ import java.util.List;
 @RequestMapping("/api/favorites")
 public class FavoriteController {
   private final FavoriteService favoriteService;
+  private final UserRepository userRepository;
+  private final CourseRepository courseRepository;
 
-  public FavoriteController(FavoriteService favoriteService) {
+  public FavoriteController(FavoriteService favoriteService, UserRepository userRepository, CourseRepository courseRepository) {
     this.favoriteService = favoriteService;
+    this.userRepository = userRepository;
+    this.courseRepository = courseRepository;
   }
 
   @GetMapping("/user/{userId}")
@@ -23,7 +32,16 @@ public class FavoriteController {
   }
 
   @PostMapping
-  public ResponseEntity<Favorite> add(@RequestBody Favorite favorite) {
+  public ResponseEntity<Favorite> add(@RequestBody FavoriteRequest request) {
+    User user = userRepository.findById(request.getUserId())
+            .orElseThrow(() -> new RuntimeException("User not found"));
+    Course course = courseRepository.findById(request.getCourseId())
+            .orElseThrow(() -> new RuntimeException("Course not found"));
+
+    Favorite favorite = new Favorite();
+    favorite.setUser(user);
+    favorite.setCourse(course);
+
     return ResponseEntity.status(HttpStatus.CREATED).body(favoriteService.save(favorite));
   }
 
