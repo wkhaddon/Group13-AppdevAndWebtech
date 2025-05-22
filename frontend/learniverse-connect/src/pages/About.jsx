@@ -15,11 +15,11 @@ function About() {
 				</section>
 
 				<section className={styles.values}>
-					<h2>Our Values</h2>
+					<h2>Where we are located</h2>
 					<ul>
-						<li>Innovation in learning</li>
-						<li>Quality in education</li>
-						<li>Accessibility for all</li>
+						<li>Larsgårdsvegen 2,</li>
+						<li>6009 Ålesund,</li>
+						<li>Norway</li>
 					</ul>
 				</section>
 			</section>
