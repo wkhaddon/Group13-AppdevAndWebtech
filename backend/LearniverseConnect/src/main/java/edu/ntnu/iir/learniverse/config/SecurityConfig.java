@@ -1,6 +1,7 @@
 package edu.ntnu.iir.learniverse.config;
 
 import edu.ntnu.iir.learniverse.security.JwtAuthFilter;
+import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,30 +16,45 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
-
+/**
+ * Security configuration class for the application.
+ */
 @Configuration
 @EnableMethodSecurity(jsr250Enabled = true)
 public class SecurityConfig {
   private static final String[] PUBLIC_GET_ENDPOINTS = {
-        "/api/auth/**",
-        "/api/courses",
-        "/api/courses/**",
-        "/api/categories",
-        "/api/categories/**",
+      "/api/auth/**",
+      "/api/courses",
+      "/api/courses/**",
+      "/api/categories",
+      "/api/categories/**",
   };
 
   private static final String[] PUBLIC_POST_ENDPOINTS = {
-        "/api/auth/**",
+      "/api/auth/**",
   };
 
+  /**
+   * Bean for password encoding.
+   *
+   * @return a BCryptPasswordEncoder instance
+   */
   @Bean
   public BCryptPasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
 
+  /**
+   * Bean for security filter chain.
+   *
+   * @param http the HttpSecurity object
+   * @param jwtAuthFilter the JWT authentication filter
+   * @return a SecurityFilterChain instance
+   * @throws Exception if an error occurs during configuration
+   */
   @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
+  public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter)
+          throws Exception {
     http
         .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for simplicity (cookies)
         .authorizeHttpRequests(auth -> auth
@@ -52,6 +68,11 @@ public class SecurityConfig {
     return http.build();
   }
 
+  /**
+   * Bean for CORS configuration.
+   *
+   * @return a CorsConfigurationSource instance
+   */
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration config = new CorsConfiguration();

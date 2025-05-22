@@ -6,27 +6,38 @@ import edu.ntnu.iir.learniverse.dto.UserDto;
 import edu.ntnu.iir.learniverse.entity.GlobalRole;
 import edu.ntnu.iir.learniverse.entity.User;
 import edu.ntnu.iir.learniverse.repository.UserRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import java.time.LocalDateTime;
+import java.util.Optional;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
-
+/**
+ * Service class for handling authentication-related operations.
+ */
 @Service
 public class AuthService {
   private final UserRepository userRepository;
   private final BCryptPasswordEncoder passwordEncoder;
 
+  /**
+   * Constructor for AuthService.
+   *
+   * @param userRepository the user repository for database operations
+   * @param passwordEncoder the password encoder for hashing passwords
+   */
   public AuthService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
   }
 
+  /**
+   * Registers a new user.
+   *
+   * @param request the registration request containing user details
+   * @return the registered user as a UserDto
+   */
   public UserDto register(RegisterRequest request) {
     String normalizedEmail = normalizeEmail(request.email);
 
@@ -49,6 +60,12 @@ public class AuthService {
     return UserDto.fromUser(userRepository.save(user));
   }
 
+  /**
+   * Logs in a user.
+   *
+   * @param request the login request containing username/email and password
+   * @return the logged-in user as a UserDto, or an empty Optional if login fails
+   */
   public Optional<UserDto> login(LoginRequest request) {
     Optional<User> userOpt;
 
@@ -64,6 +81,11 @@ public class AuthService {
         .map(UserDto::fromUser);
   }
 
+  /**
+   * Validates the current user's token.
+   *
+   * @return an Optional containing the user details if the token is valid, or an empty Optional
+   */
   public Optional<UserDto> validateToken() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -77,9 +99,17 @@ public class AuthService {
         .map(UserDto::fromUser);
   }
 
+  /**
+   * Normalizes the email address by removing dots and aliases.
+   *
+   * @param email the email address to normalize
+   * @return the normalized email address
+   */
   private String normalizeEmail(String email) {
     String[] parts = email.split("@");
-    if (parts.length != 2) return email; // Invalid email format, return as is
+    if (parts.length != 2) {
+      return email; // Invalid email format, return as is
+    }
 
     String local = parts[0];
     String domain = parts[1].toLowerCase();

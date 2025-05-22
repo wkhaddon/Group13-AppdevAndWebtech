@@ -11,16 +11,22 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.PermitAll;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import java.time.Duration;
+import java.util.Map;
+import java.util.Optional;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.time.Duration;
-import java.util.Map;
-import java.util.Optional;
-
+/**
+ * Controller for handling authentication-related requests.
+ */
 @PermitAll
 @RestController
 @RequestMapping("/api/auth")
@@ -29,11 +35,23 @@ public class AuthController {
   private final AuthService authService;
   private final JwtUtil jwtUtil;
 
+  /**
+   * Constructor for AuthController.
+   *
+   * @param authService the authentication service
+   * @param jwtUtil the JWT utility for generating and validating tokens
+   */
   public AuthController(AuthService authService, JwtUtil jwtUtil) {
     this.authService = authService;
     this.jwtUtil = jwtUtil;
   }
 
+  /**
+   * Handles user registration.
+   *
+   * @param request the registration request containing user details
+   * @return a response entity with the registration status
+   */
   @Operation(
       summary = "Register a new user",
       description = "Create a new user account with the provided registration details"
@@ -61,6 +79,12 @@ public class AuthController {
     }
   }
 
+  /**
+   * Handles user login.
+   *
+   * @param request the login request containing user credentials
+   * @return a response entity with the login status
+   */
   @Operation(summary = "Login", description = "Authenticate a user and return a JWT token")
   @ApiResponse(responseCode = "200", description = "Login successful")
   @ApiResponse(responseCode = "401", description = "Invalid credentials")
@@ -81,6 +105,11 @@ public class AuthController {
         .body(Map.of("message", "Login successful"));
   }
 
+  /**
+   * Handles user logout.
+   *
+   * @return a response entity with the logout status
+   */
   @Operation(summary = "Logout", description = "Invalidate the current user's session")
   @ApiResponse(responseCode = "200", description = "Logout successful")
   @PostMapping("/logout")
@@ -98,7 +127,15 @@ public class AuthController {
         .body(Map.of("message", "Logout successful"));
   }
 
-  @Operation(summary = "Validate JWT token", description = "Check if the provided JWT token is valid and return user details")
+  /**
+   * Validates the JWT token and returns user details.
+   *
+   * @param request the HTTP request containing the JWT token
+   * @return a response entity with user details if the token is valid
+   */
+  @Operation(
+          summary = "Validate JWT token",
+          description = "Check if the provided JWT token is valid and return user details")
   @ApiResponse(responseCode = "200", description = "Token is valid")
   @ApiResponse(responseCode = "401", description = "Invalid token")
   @GetMapping("/validate")
@@ -112,6 +149,12 @@ public class AuthController {
     return ResponseEntity.ok(userDtoOpt.get());
   }
 
+  /**
+   * Creates a JWT cookie with the specified token.
+   *
+   * @param jwt the JWT token to be set in the cookie
+   * @return a ResponseCookie with the JWT token
+   */
   private ResponseCookie createJwtCookie(String jwt) {
     return ResponseCookie.from("jwt", jwt)
         .httpOnly(true)

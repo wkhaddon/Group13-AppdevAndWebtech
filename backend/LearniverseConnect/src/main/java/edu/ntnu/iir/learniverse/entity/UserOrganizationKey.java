@@ -1,11 +1,13 @@
 package edu.ntnu.iir.learniverse.entity;
 
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
+/**
+ * Composite key class for UserOrganizationMembership entity.
+ */
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor

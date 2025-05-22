@@ -2,16 +2,26 @@ package edu.ntnu.iir.learniverse.dto;
 
 import edu.ntnu.iir.learniverse.entity.User;
 
-public class AuthResponse {
-  public final Long id;
-  public final String username;
-  public final String email;
-  public final String role;
-
+/**
+ * Data Transfer Object (DTO) for authentication response.
+ */
+public record AuthResponse(
+    Long id,
+    String username,
+    String email,
+    String role
+) {
+  /**
+   * Constructor for AuthResponse.
+   *
+   * @param user the user object containing user details
+   */
   public AuthResponse(User user) {
-    this.id = user.getId();
-    this.username = user.getUsername();
-    this.email = user.getEmail();
-    this.role = user.getGlobalRole().name();
+    this(
+        user.getId(),
+        user.getUsername(),
+        user.getEmail(),
+        user.getGlobalRole().name()
+    );
   }
 }

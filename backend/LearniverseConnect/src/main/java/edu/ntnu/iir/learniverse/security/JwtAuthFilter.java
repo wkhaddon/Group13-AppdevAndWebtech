@@ -1,21 +1,32 @@
 package edu.ntnu.iir.learniverse.security;
 
 import io.jsonwebtoken.JwtException;
-import jakarta.servlet.*;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.GenericFilter;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.Collections;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.util.Collections;
-
+/**
+ * Filter to authenticate JWT tokens in incoming requests.
+ */
 @Component
 public class JwtAuthFilter extends GenericFilter {
   private final JwtUtil jwtUtil;
 
+  /**
+   * Constructor for JwtAuthFilter.
+   *
+   * @param jwtUtil the utility class for handling JWT tokens
+   */
   public JwtAuthFilter(JwtUtil jwtUtil) {
     this.jwtUtil = jwtUtil;
   }
@@ -38,7 +49,8 @@ public class JwtAuthFilter extends GenericFilter {
 
             // Build an Authentication object
             var authority = new SimpleGrantedAuthority("ROLE_" + role.toUpperCase());
-            var auth = new UsernamePasswordAuthenticationToken(username, null, Collections.singleton(authority));
+            var auth = new UsernamePasswordAuthenticationToken(username, null,
+                    Collections.singleton(authority));
 
             // Register in security context
             SecurityContextHolder.getContext().setAuthentication(auth);

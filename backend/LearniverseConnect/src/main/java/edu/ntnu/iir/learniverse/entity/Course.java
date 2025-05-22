@@ -1,13 +1,24 @@
 package edu.ntnu.iir.learniverse.entity;
 
-import jakarta.persistence.*;
-import lombok.Getter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Setter;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import lombok.Getter;
+import lombok.Setter;
 
+/**
+ * Entity class representing a course.
+ */
 @Getter
 @Setter
 @Entity
