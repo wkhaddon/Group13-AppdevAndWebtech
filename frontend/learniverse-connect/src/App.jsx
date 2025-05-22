@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Courses from './pages/Courses';
 import Favorites from './pages/Favorites';
+import AdminCourses from './pages/AdminCourses';
 import About from './pages/About';
 
 import Login from './pages/Login';
@@ -63,7 +64,7 @@ function App() {
 						path="/admin"
 						element={
 							<ProtectedRoute requiredRoles={[Role.Admin]}>
-								{/* Admin Dashboard Component */}
+								<AdminCourses />
 							</ProtectedRoute>
 						}
 					/>

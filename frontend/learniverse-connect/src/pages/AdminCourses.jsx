@@ -1,6 +1,6 @@
 import styles from './AdminCourses.module.scss';
 import { useEffect, useState } from 'react';
-import Slider from '@mui/material/Slider';
+import CourseFilter from '@/components/CourseFilter';
 import api from '@/api/axios';
 import { useSearchParams } from 'react-router-dom';
 
@@ -98,42 +98,18 @@ function AdminCourses() {
 
 	return (
 		<div className={styles.container}>
-			<aside className={styles.searchBox}>
-				<h2 className={styles.searchTitle}>Admin Filter</h2>
-				<input
-					type="text"
-					placeholder="Search courses..."
-					value={searchQuery}
-					onChange={(e) => setSearchQuery(e.target.value)}
-					className={styles.searchInput}
-				/>
-				<select
-					value={category}
-					onChange={(e) => setCategory(e.target.value)}
-					className={styles.dropdown}
-				>
-					<option value="">All Categories</option>
-					{categories.map(cat => (
-						<option key={cat.id} value={cat.id}>{cat.name}</option>
-					))}
-				</select>
-				{maxCoursePrice !== null && (
-					<div className={styles.rangeSlider}>
-						<label>Price Range: {priceRange[0]} - {priceRange[1]}</label>
-						<Slider
-							value={priceRange}
-							onChange={(_, newValue) => setPriceRange(newValue)}
-							valueLabelDisplay="auto"
-							min={MIN}
-							max={maxCoursePrice}
-						/>
-					</div>
-				)}
-				<div className={styles.buttonRow}>
-				<button onClick={handleSearch} className={styles.searchButton}>Search</button>
-				<button onClick={handleReset} className={styles.showAllButton}>Reset</button>
-				</div>
-			</aside>
+			<CourseFilter
+				categories={categories}
+				category={category}
+				setCategory={setCategory}
+				searchQuery={searchQuery}
+				setSearchQuery={setSearchQuery}
+				priceRange={priceRange}
+				setPriceRange={setPriceRange}
+				maxCoursePrice={maxCoursePrice}
+				onSearch={handleSearch}
+				onReset={handleReset}
+			/>
 
 			<main>
 				{loading && <p>Loading courses...</p>}

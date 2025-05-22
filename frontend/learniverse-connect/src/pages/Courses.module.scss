@@ -13,69 +13,6 @@
 	}
 }
 
-.searchBox {
-	background-color: var(--primary);
-	border-radius: 12px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-	display: flex;
-	flex-direction: column;
-	gap: $spacing-md;
-	padding: $spacing-lg;
-
-	@include respond(sm-up) {
-		position: sticky;
-		top: 12rem;
-	}
-
-}
-
-.searchTitle {
-	font-size: 1.8rem;
-	margin-bottom: $spacing-sm;
-	color: var(--text-dark);
-	text-align: center;
-}
-
-.searchInput,
-.dropdown {
-	padding: 0.75rem 1rem;
-	border: 0;
-	border-radius: 8px;
-	font-size: 1rem;
-	background-color: rgba(0, 0, 0, 0.2);
-	color: var(--text);
-}
-
-.rangeSlider {
-	display: flex;
-	flex-direction: column;
-	gap: 0.5rem;
-}
-
-.buttonRow {
-	display: flex;
-	justify-content: space-between;
-	gap: 1rem;
-	margin-top: 1rem;
-}
-
-.searchButton,
-.showAllButton {
-	padding: 0.75rem 1rem;
-	background-color: var(--surface);
-	color: var(--text);
-	border: none;
-	border-radius: 8px;
-	font-size: 1rem;
-	cursor: pointer;
-	transition: background-color 0.3s ease;
-}
-
-.searchButton:hover,
-.showAllButton:hover {
-	background-color: var(--primary-hover);
-}
-
 .courseList {
 	width: 100%;
 	display: grid;
