@@ -37,7 +37,8 @@ public record CourseResponse(
     Long categoryId,
     String categoryName,
     Long providerId,
-    String providerName
+    String providerName,
+    Boolean isHidden
 ) {
   /**
    * Constructor for CourseResponse.
@@ -59,7 +60,8 @@ public record CourseResponse(
         course.getCategory() != null ? course.getCategory().getId() : null,
         course.getCategory() != null ? course.getCategory().getName() : null,
         course.getProvider() != null ? course.getProvider().getId() : null,
-        course.getProvider() != null ? course.getProvider().getName() : null
+        course.getProvider() != null ? course.getProvider().getName() : null,
+        course.getIsHidden()
     );
   }
 }

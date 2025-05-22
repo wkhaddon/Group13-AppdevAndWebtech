@@ -41,10 +41,11 @@ public class CourseService {
   /**
    * Get all courses.
    *
+   * @param showHidden whether to include hidden courses
    * @return a list of all courses
    */
-  public List<CourseResponse> getAllCourses() {
-    List<Course> courses = courseRepository.findAll();
+  public List<CourseResponse> getAllCourses(boolean showHidden) {
+    List<Course> courses = courseRepository.findAll(showHidden);
 
     return courses.stream()
         .map(CourseResponse::new)
@@ -72,12 +73,13 @@ public class CourseService {
    * @return a list of courses matching the search criteria
    */
   public List<CourseResponse> searchCourses(String query, Long categoryId,
-                                            Double minPrice, Double maxPrice) {
+                                            Double minPrice, Double maxPrice,
+                                            boolean showHidden) {
     if (query == null && categoryId == null && minPrice == null && maxPrice == null) {
-      return getAllCourses();
+      return getAllCourses(showHidden);
     }
 
-    List<Course> courses = courseRepository.searchCourses(query, categoryId, minPrice, maxPrice);
+    List<Course> courses = courseRepository.searchCourses(query, categoryId, minPrice, maxPrice, showHidden);
     return courses.stream()
         .map(CourseResponse::new)
         .toList();
@@ -88,8 +90,8 @@ public class CourseService {
    *
    * @return the minimum price of all courses
    */
-  public Long getMaxPrice() {
-    return courseRepository.getMaxPrice();
+  public Long getMaxPrice(boolean showHidden) {
+    return courseRepository.getMaxPrice(showHidden);
   }
 
   /**
@@ -147,6 +149,18 @@ public class CourseService {
     }
 
     courseRepository.deleteById(id);
+  }
+
+  /**
+   * Toggle the visibility of a course.
+   *
+   * @param courseId the ID of the course to toggle visibility for
+   */
+  public void toggleVisibility(Long courseId) {
+    Course course = courseRepository.findById(courseId, true)
+            .orElseThrow(() -> new NotFoundException("Course not found: " + courseId));
+    course.setIsHidden(!course.getIsHidden());
+    courseRepository.save(course);
   }
 
   private boolean isUserInOrganization(Long providerId, User user) {

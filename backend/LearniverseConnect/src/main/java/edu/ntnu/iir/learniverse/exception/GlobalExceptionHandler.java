@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 /**
  * Global exception handler for the application.
@@ -67,6 +68,17 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(BadRequestException.class)
   public ResponseEntity<ErrorResponse> handleBadRequest(BadRequestException e) {
     return buildError(HttpStatus.BAD_REQUEST, e.getMessage());
+  }
+
+  /**
+   * Handles NoResourceFoundException.
+   *
+   * @param e the exception
+   * @return a ResponseEntity with the error message
+   */
+  @ExceptionHandler(NoResourceFoundException.class)
+  public ResponseEntity<ErrorResponse> handleNoResourceFound(NoResourceFoundException e) {
+    return buildError(HttpStatus.NOT_FOUND, e.getMessage());
   }
 
   /**
