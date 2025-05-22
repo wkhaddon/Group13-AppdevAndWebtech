@@ -39,26 +39,6 @@ function App() {
 						}
 					/>
 
-					{/* Provider-specific routes */}
-					<Route
-						path="/provider"
-						element={
-							<ProtectedRoute requiredRoles={[Role.Provider]}>
-								{/* Provider Panel Component */}
-							</ProtectedRoute>
-						}
-					/>
-
-					{/* Support-specific routes */}
-					<Route
-						path="/support"
-						element={
-							<ProtectedRoute requiredRoles={[Role.Support]}>
-								{/* Support Tools Component */}
-							</ProtectedRoute>
-						}
-					/>
-
 					{/* Admin-specific routes */}
 					<Route
 						path="/admin"
