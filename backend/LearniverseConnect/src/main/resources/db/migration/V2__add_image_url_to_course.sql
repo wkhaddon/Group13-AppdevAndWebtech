@@ -1,2 +1,2 @@
-ALTER TABLE course
+ALTER TABLE courses
 ADD COLUMN image_url TEXT;

@@ -40,6 +40,8 @@ function CourseCard({ course }) {
 				<p className={styles.level}>{course.level}</p>
 			</header>
 
+			<img src={course.imageUrl} alt={course.title} className={styles.image} />
+
 			<p className={styles.description}>{course.description}</p>
 
 			<div className={styles.meta}>
