@@ -2,6 +2,8 @@
 
 Welcome to **Learniverse** – a modern web platform for discovering, organizing, and enrolling in online courses across a wide range of categories. This project is built with a focus on modularity, security, and scalability.
 
+![Front Page](assets/FrontPage.png "Front Page")
+
 ---
 
 ## 📚 Overview
