@@ -17,8 +17,8 @@ function About() {
 				<section className={styles.values}>
 					<h2>Where we are located</h2>
 					<ul>
-						<li>Larsgårdsvegen 2,</li>
-						<li>6009 Ålesund,</li>
+						<li>Larsgårdsvegen 2</li>
+						<li>6009 Ålesund</li>
 						<li>Norway</li>
 					</ul>
 				</section>
