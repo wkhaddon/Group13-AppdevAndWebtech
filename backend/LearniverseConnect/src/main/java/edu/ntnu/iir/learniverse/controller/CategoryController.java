@@ -2,6 +2,7 @@ package edu.ntnu.iir.learniverse.controller;
 
 import edu.ntnu.iir.learniverse.entity.Category;
 import edu.ntnu.iir.learniverse.service.CategoryService;
+import jakarta.annotation.security.PermitAll;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,11 +20,13 @@ public class CategoryController {
     this.categoryService = categoryService;
   }
 
+  @PermitAll
   @GetMapping
   public List<Category> getAllCategories() {
     return categoryService.getAll();
   }
 
+  @PermitAll
   @GetMapping("/{id}")
   public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
     return categoryService.getById(id)

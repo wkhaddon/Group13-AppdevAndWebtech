@@ -3,8 +3,10 @@ package edu.ntnu.iir.learniverse.controller;
 import edu.ntnu.iir.learniverse.dto.CourseResponse;
 import edu.ntnu.iir.learniverse.entity.Course;
 import edu.ntnu.iir.learniverse.service.CourseService;
+import jakarta.annotation.security.PermitAll;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,6 +27,7 @@ public class CourseController {
 
   @Operation(summary = "Get all courses", description = "Retrieve a list of all available courses")
   @ApiResponse(responseCode = "200", description = "Successfully retrieved list of courses")
+  @PermitAll
   @GetMapping
   public List<CourseResponse> getAllCourses() {
     return courseService.getAllCourses();
@@ -33,6 +36,7 @@ public class CourseController {
   @Operation(summary = "Get course by ID", description = "Retrieve a course by its ID")
   @ApiResponse(responseCode = "200", description = "Successfully retrieved the course")
   @ApiResponse(responseCode = "404", description = "Course not found")
+  @PermitAll
   @GetMapping("/{id}")
   public ResponseEntity<CourseResponse> getCourseById(@PathVariable Long id) {
     return courseService.getCourseById(id)
@@ -46,6 +50,7 @@ public class CourseController {
   )
   @ApiResponse(responseCode = "200", description = "Successfully retrieved search results")
   @ApiResponse(responseCode = "400", description = "Invalid query parameters")
+  @PermitAll
   @GetMapping("/search")
   public List<CourseResponse> searchCourses(
       @RequestParam(name = "q", required = false) String query,
@@ -58,6 +63,7 @@ public class CourseController {
 
   @Operation(summary = "Create a new course", description = "Add a new course to the system")
   @ApiResponse(responseCode = "201", description = "Successfully created the course")
+  @PermitAll
   @PostMapping
   public ResponseEntity<Course> createCourse(@RequestBody Course course) {
     Course createdCourse = courseService.createCourse(course);
@@ -66,6 +72,7 @@ public class CourseController {
 
   @Operation(summary = "Get the maximum price of courses", description = "Retrieve the maximum price of courses")
   @ApiResponse(responseCode = "200", description = "Successfully retrieved the maximum price")
+  @PermitAll
   @GetMapping("/maxPrice")
   public ResponseEntity<Long> getMaxPrice() {
     return ResponseEntity.ok(courseService.getMaxPrice());
@@ -74,6 +81,7 @@ public class CourseController {
   @Operation(summary = "Delete a course", description = "Delete a course by its ID")
   @ApiResponse(responseCode = "204", description = "Successfully deleted the course")
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasAnyRole('PROVIDER', 'SUPPORT', 'ADMIN')")
   public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
     courseService.deleteCourse(id);
     return ResponseEntity.noContent().build();
