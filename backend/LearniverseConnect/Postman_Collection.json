@@ -1,111 +1,114 @@
 {
 	"info": {
-	"name": "Learniverse",
-	"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	  "name": "Learniverse",
+	  "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
-	{
+	  {
 		"name": "Login (Regular User)",
 		"request": {
-		"method": "POST",
-		"header": [
+		  "method": "POST",
+		  "header": [
 			{ "key": "Content-Type", "value": "application/json" }
-		],
-		"url": {
+		  ],
+		  "url": {
 			"raw": "http://localhost:8443/api/auth/login",
 			"protocol": "http",
 			"host": ["localhost"],
 			"port": "8443",
 			"path": ["api", "auth", "login"]
-		},
-		"body": {
+		  },
+		  "body": {
 			"mode": "raw",
 			"raw": "{\n  \"identifier\": \"dave\",\n  \"password\": \"Dangerous2024\"\n}"
-		}
+		  }
 		},
 		"response": [],
 		"event": [
-		{
+		  {
 			"listen": "test",
 			"script": {
-			"exec": [
+			  "type": "text/javascript",
+			  "exec": [
 				"let res = pm.response.json();",
 				"pm.collectionVariables.set(\"token\", res.token);",
 				"pm.collectionVariables.set(\"userId\", res.userId);",
 				"pm.test(\"Login successful\", () => pm.response.code === 200);"
-			],
-			"type": "text/javascript"
+			  ]
 			}
-		}
+		  }
 		]
-	},
-	{
+	  },
+	  {
 		"name": "Get All Courses (Public)",
 		"request": {
-		"method": "GET",
-		"header": [],
-		"url": {
+		  "method": "GET",
+		  "header": [],
+		  "url": {
 			"raw": "http://localhost:8443/api/courses",
 			"protocol": "http",
 			"host": ["localhost"],
 			"port": "8443",
 			"path": ["api", "courses"]
-		}
+		  }
 		},
 		"response": []
-	},
-	{
+	  },
+	  {
 		"name": "Add to Favorites",
 		"request": {
-		"method": "POST",
-		"header": [
+		  "method": "POST",
+		  "header": [
 			{ "key": "Content-Type", "value": "application/json" },
 			{ "key": "Authorization", "value": "Bearer {{token}}" }
-		],
-		"url": {
+		  ],
+		  "url": {
 			"raw": "http://localhost:8443/api/favorites/add",
 			"protocol": "http",
 			"host": ["localhost"],
 			"port": "8443",
 			"path": ["api", "favorites", "add"]
-		},
-		"body": {
+		  },
+		  "body": {
 			"mode": "raw",
-			"raw": "1"
-		}
+			"raw": "{\n  \"courseId\": 1\n}"
+		  }
 		},
 		"response": []
-	},
-	{
+	  },
+	  {
 		"name": "Get Favorites by User",
 		"request": {
-		"method": "GET",
-		"header": [],
-		"url": {
-			"raw": "http://localhost:8443/api/favorites/user/{{userId}}",
+		  "method": "GET",
+		  "header": [],
+		  "url": {
+			"raw": "http://localhost:8443/api/favorites/user/1",
 			"protocol": "http",
 			"host": ["localhost"],
 			"port": "8443",
-			"path": ["api", "favorites", "user", "{{userId}}"]
-		}
+			"path": ["api", "favorites", "user", "1"]
+		  }
 		},
 		"response": []
-	},
-	{
+	  },
+	  {
 		"name": "Delete Favorite by ID",
 		"request": {
-		"method": "DELETE",
-		"header": [],
-		"url": {
+		  "method": "DELETE",
+		  "header": [
+			{ "key": "Authorization", "value": "Bearer {{token}}" }
+		  ],
+		  "url": {
 			"raw": "http://localhost:8443/api/favorites/1",
 			"protocol": "http",
 			"host": ["localhost"],
 			"port": "8443",
 			"path": ["api", "favorites", "1"]
-		}
+		  }
 		},
 		"response": []
-	}
+	  }
 	],
 	"variable": []
-}
+  }
+  
