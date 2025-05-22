@@ -57,15 +57,51 @@
 	font-style: italic;
 }
 
-.emailButton {
-	margin-top: 1rem;
+.favoriteButton {
+	margin-top: $spacing-sm;
 	padding: 0.5rem 1rem;
-	background-color: var(--surface);
-	color: var(--text-dark);
 	border: none;
-	border-radius: 5px;
+	border-radius: 8px;
+	background-color: var(--primary);
+	color: var(--text);
 	cursor: pointer;
-	transition: background-color 0.3s ease;
+	font-weight: bold;
+	transition: background-color 0.2s ease;
+
+	&:hover {
+		background-color: var(--primary-hover);
+	}
+}
+
+.added {
+	margin-top: $spacing-sm;
+	color: var(--success);
+	font-weight: bold;
+}
+
+.error {
+	color: var(--danger);
+	margin-top: $spacing-xs;
+	font-size: 0.9rem;
+}
+
+.buttons {
+	display: flex;
+	justify-content: space-between;
+	gap: $spacing-sm;
+	margin-top: $spacing-md;
+}
+
+.emailButton {
+	margin-top: $spacing-sm;
+	padding: 0.5rem 1rem;
+	border: none;
+	border-radius: 8px;
+	background-color: var(--primary);
+	color: var(--text);
+	cursor: pointer;
+	font-weight: bold;
+	transition: background-color 0.2s ease;
 
 	&:hover {
 		background-color: var(--primary-hover);

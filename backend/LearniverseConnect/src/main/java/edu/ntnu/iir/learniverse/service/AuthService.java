@@ -5,6 +5,9 @@ import edu.ntnu.iir.learniverse.dto.RegisterRequest;
 import edu.ntnu.iir.learniverse.dto.UserDto;
 import edu.ntnu.iir.learniverse.entity.GlobalRole;
 import edu.ntnu.iir.learniverse.entity.User;
+import edu.ntnu.iir.learniverse.exception.BadRequestException;
+import edu.ntnu.iir.learniverse.exception.ConflictException;
+import edu.ntnu.iir.learniverse.exception.NotFoundException;
 import edu.ntnu.iir.learniverse.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -43,11 +46,11 @@ public class AuthService {
 
     // Check for existing username/email
     if (userRepository.findByUsernameIgnoreCase(request.username).isPresent()) {
-      throw new IllegalArgumentException("Username already exists");
+      throw new ConflictException("Username already exists");
     }
 
     if (userRepository.findByEmailIgnoreCase(normalizedEmail).isPresent()) {
-      throw new IllegalArgumentException("Email already exists");
+      throw new ConflictException("Email already exists");
     }
 
     User user = new User();
@@ -66,7 +69,7 @@ public class AuthService {
    * @param request the login request containing username/email and password
    * @return the logged-in user as a UserDto, or an empty Optional if login fails
    */
-  public Optional<UserDto> login(LoginRequest request) {
+  public UserDto login(LoginRequest request) {
     Optional<User> userOpt;
 
     // Determine if it's an email (contains @) or username
@@ -78,7 +81,8 @@ public class AuthService {
 
     return userOpt
         .filter(user -> passwordEncoder.matches(request.password, user.getPasswordHash()))
-        .map(UserDto::fromUser);
+        .map(UserDto::fromUser).orElseThrow(() ->
+                    new BadRequestException("Invalid username/email or password"));
   }
 
   /**
@@ -86,17 +90,17 @@ public class AuthService {
    *
    * @return an Optional containing the user details if the token is valid, or an empty Optional
    */
-  public Optional<UserDto> validateToken() {
+  public UserDto validateToken() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
     if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {
-      return Optional.empty();
+      throw new BadRequestException("Invalid token");
     }
 
     String username = auth.getName();
 
     return userRepository.findByUsernameIgnoreCase(username)
-        .map(UserDto::fromUser);
+        .map(UserDto::fromUser).orElseThrow(() -> new NotFoundException("User not found"));
   }
 
   /**

@@ -5,6 +5,7 @@ import edu.ntnu.iir.learniverse.dto.RegisterRequest;
 import edu.ntnu.iir.learniverse.dto.UserDto;
 import edu.ntnu.iir.learniverse.security.JwtUtil;
 import edu.ntnu.iir.learniverse.service.AuthService;
+import edu.ntnu.iir.learniverse.util.ApiUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -59,24 +60,15 @@ public class AuthController {
   @ApiResponse(responseCode = "200", description = "User registered successfully")
   @ApiResponse(responseCode = "400", description = "User already exists")
   @PostMapping("/register")
-  public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
-    try {
-      UserDto user = authService.register(request);
-      if (user == null) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(Map.of("error", "User already exists"));
-      }
+  public ResponseEntity<Map<String, String>> register(@Valid @RequestBody RegisterRequest request) {
+    UserDto user = authService.register(request);
 
-      String jwt = jwtUtil.generateToken(user.username(), user.role().name());
-      ResponseCookie cookie = createJwtCookie(jwt);
+    String jwt = jwtUtil.generateToken(user.username(), user.role().name());
+    ResponseCookie cookie = createJwtCookie(jwt);
 
-      return ResponseEntity.ok()
-          .header(HttpHeaders.SET_COOKIE, cookie.toString())
-          .body(Map.of("message", "User registered successfully"));
-    } catch (IllegalArgumentException e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-          .body(Map.of("error", e.getMessage()));
-    }
+    return ResponseEntity.ok()
+        .header(HttpHeaders.SET_COOKIE, cookie.toString())
+        .body(ApiUtils.message("User registered successfully"));
   }
 
   /**
@@ -89,20 +81,14 @@ public class AuthController {
   @ApiResponse(responseCode = "200", description = "Login successful")
   @ApiResponse(responseCode = "401", description = "Invalid credentials")
   @PostMapping("/login")
-  public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
-    Optional<UserDto> userDtoOpt = authService.login(request);
-    if (userDtoOpt.isEmpty()) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-          .body(Map.of("error", "Invalid credentials"));
-    }
-
-    UserDto userDto = userDtoOpt.get();
+  public ResponseEntity<Map<String, String>> login(@Valid @RequestBody LoginRequest request) {
+    UserDto userDto = authService.login(request);
     String jwt = jwtUtil.generateToken(userDto.username(), userDto.role().name());
     ResponseCookie cookie = createJwtCookie(jwt);
 
     return ResponseEntity.ok()
         .header(HttpHeaders.SET_COOKIE, cookie.toString())
-        .body(Map.of("message", "Login successful"));
+        .body(ApiUtils.message("Login successful"));
   }
 
   /**
@@ -113,7 +99,7 @@ public class AuthController {
   @Operation(summary = "Logout", description = "Invalidate the current user's session")
   @ApiResponse(responseCode = "200", description = "Logout successful")
   @PostMapping("/logout")
-  public ResponseEntity<?> logout() {
+  public ResponseEntity<Map<String, String>> logout() {
     ResponseCookie cookie = ResponseCookie.from("jwt", "")
         .httpOnly(true)
         .secure(true)
@@ -124,7 +110,7 @@ public class AuthController {
 
     return ResponseEntity.ok()
         .header(HttpHeaders.SET_COOKIE, cookie.toString())
-        .body(Map.of("message", "Logout successful"));
+        .body(ApiUtils.message("Logout successful"));
   }
 
   /**
@@ -139,14 +125,9 @@ public class AuthController {
   @ApiResponse(responseCode = "200", description = "Token is valid")
   @ApiResponse(responseCode = "401", description = "Invalid token")
   @GetMapping("/validate")
-  public ResponseEntity<?> validate(HttpServletRequest request) {
-    Optional<UserDto> userDtoOpt = authService.validateToken();
-
-    if (userDtoOpt.isEmpty()) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid token"));
-    }
-
-    return ResponseEntity.ok(userDtoOpt.get());
+  public ResponseEntity<UserDto> validate(HttpServletRequest request) {
+    UserDto userDto = authService.validateToken();
+    return ResponseEntity.ok(userDto);
   }
 
   /**

@@ -59,4 +59,7 @@ public class Course {
   @ManyToOne
   @JoinColumn(name = "provider_id")
   private ProviderOrganization provider;
+
+  @Column(name = "image_url")
+  private String imageUrl;
 }
