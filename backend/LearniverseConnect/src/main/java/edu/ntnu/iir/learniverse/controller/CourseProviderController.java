@@ -1,6 +1,7 @@
 package edu.ntnu.iir.learniverse.controller;
 
-import edu.ntnu.iir.learniverse.entity.ProviderOrganization;
+import edu.ntnu.iir.learniverse.dto.CourseProviderCreateRequest;
+import edu.ntnu.iir.learniverse.dto.CourseProviderResponse;
 import edu.ntnu.iir.learniverse.service.CourseProviderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -47,7 +48,7 @@ public class CourseProviderController {
           description = "Successfully retrieved list of course providers")
   @PermitAll
   @GetMapping
-  public List<ProviderOrganization> getAll() {
+  public List<CourseProviderResponse> getAll() {
     return courseProviderService.getAll();
   }
 
@@ -63,7 +64,8 @@ public class CourseProviderController {
   @ApiResponse(responseCode = "201", description = "Successfully retrieved the course provider")
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping
-  public ResponseEntity<ProviderOrganization> create(@RequestBody ProviderOrganization cp) {
+  public ResponseEntity<CourseProviderResponse> create(
+          @RequestBody CourseProviderCreateRequest cp) {
     return ResponseEntity.status(HttpStatus.CREATED).body(courseProviderService.save(cp));
   }
 }

@@ -1,6 +1,5 @@
 package edu.ntnu.iir.learniverse.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -37,7 +36,6 @@ public class OrganizationJoinRequest {
   private LocalDateTime submittedAt;
 
   @ManyToOne
-  @JsonIgnore
   @JoinColumn(name = "requested_by")
   private User requestedBy;
 }

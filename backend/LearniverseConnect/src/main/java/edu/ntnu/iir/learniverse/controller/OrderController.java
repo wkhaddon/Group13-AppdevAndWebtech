@@ -1,6 +1,10 @@
 package edu.ntnu.iir.learniverse.controller;
 
+import edu.ntnu.iir.learniverse.annotation.CurrentUser;
+import edu.ntnu.iir.learniverse.dto.OrderCreateRequest;
+import edu.ntnu.iir.learniverse.dto.OrderResponse;
 import edu.ntnu.iir.learniverse.entity.Order;
+import edu.ntnu.iir.learniverse.entity.User;
 import edu.ntnu.iir.learniverse.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -44,7 +48,7 @@ public class OrderController {
           description = "Retrieve a list of all orders for a specific user")
   @ApiResponse(responseCode = "200", description = "Successfully retrieved list of orders")
   @GetMapping("/user/{userId}")
-  public List<Order> getAllForUser(@PathVariable Long userId) {
+  public List<OrderResponse> getAllForUser(@PathVariable Long userId) {
     return orderService.getAllByUser(userId);
   }
 
@@ -57,7 +61,7 @@ public class OrderController {
   @Operation(summary = "Get order by ID", description = "Retrieve an order by its ID")
   @ApiResponse(responseCode = "200", description = "Successfully retrieved the order")
   @GetMapping("/{id}")
-  public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
+  public ResponseEntity<OrderResponse> getOrderById(@PathVariable Long id) {
     return orderService.getById(id)
         .map(ResponseEntity::ok)
         .orElse(ResponseEntity.notFound().build());
@@ -74,7 +78,8 @@ public class OrderController {
           description = "Create a new order with the provided details")
   @ApiResponse(responseCode = "201", description = "Successfully created the order")
   @PostMapping
-  public ResponseEntity<Order> create(@RequestBody Order order) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(orderService.save(order));
+  public ResponseEntity<OrderResponse> create(@RequestBody OrderCreateRequest order,
+                                              @CurrentUser User user) {
+    return ResponseEntity.status(HttpStatus.CREATED).body(orderService.save(order, user));
   }
 }

@@ -1,6 +1,5 @@
 package edu.ntnu.iir.learniverse.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -54,12 +53,10 @@ public class Course {
   private String relatedCertification;
 
   @ManyToOne
-  @JsonIgnore
   @JoinColumn(name = "category_id")
   private Category category;
 
   @ManyToOne
-  @JsonIgnore
   @JoinColumn(name = "provider_id")
   private ProviderOrganization provider;
 }

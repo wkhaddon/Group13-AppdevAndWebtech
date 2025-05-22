@@ -1,6 +1,8 @@
 package edu.ntnu.iir.learniverse.controller;
 
-import edu.ntnu.iir.learniverse.entity.Favorite;
+import edu.ntnu.iir.learniverse.annotation.CurrentUser;
+import edu.ntnu.iir.learniverse.dto.FavoriteResponse;
+import edu.ntnu.iir.learniverse.entity.User;
 import edu.ntnu.iir.learniverse.service.FavoriteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -43,23 +45,28 @@ public class FavoriteController {
   @Operation(summary = "Get all favorites", description = "Retrieve a list of all user favorites")
   @ApiResponse(responseCode = "200", description = "Successfully retrieved list of favorites")
   @GetMapping("/user/{userId}")
-  public List<Favorite> getByUser(@PathVariable Long userId) {
+  public List<FavoriteResponse> getByUser(@PathVariable Long userId) {
     return favoriteService.getByUser(userId);
   }
 
   /**
-   * Get all favorites for a course.
+   * Add a new favorite for a user and course.
    *
-   * @param favorite the favorite object containing user and course information
+   * @param user the User to associate with the favorite
    * @return the created favorite
    */
   @Operation(
-          summary = "Get favorite by user and course",
-          description = "Retrieve a favorite by user ID and course ID")
-  @ApiResponse(responseCode = "200", description = "Successfully retrieved the favorite")
-  @PostMapping
-  public ResponseEntity<Favorite> add(@RequestBody Favorite favorite) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(favoriteService.save(favorite));
+          summary = "Add favorite",
+          description = "Add a new favorite for a user and course")
+  @ApiResponse(responseCode = "200", description = "Successfully added favorite")
+  @ApiResponse(responseCode = "400", description = "Invalid input")
+  @ApiResponse(responseCode = "404", description = "User or course not found")
+  @PostMapping("/add")
+  public ResponseEntity<FavoriteResponse> add(
+          @RequestBody Long courseId,
+          @CurrentUser User user) {
+    FavoriteResponse favorite = favoriteService.add(courseId, user);
+    return ResponseEntity.status(HttpStatus.CREATED).body(favorite);
   }
 
   /**

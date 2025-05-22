@@ -1,5 +1,7 @@
 package edu.ntnu.iir.learniverse.service;
 
+import edu.ntnu.iir.learniverse.dto.CourseProviderCreateRequest;
+import edu.ntnu.iir.learniverse.dto.CourseProviderResponse;
 import edu.ntnu.iir.learniverse.entity.ProviderOrganization;
 import edu.ntnu.iir.learniverse.repository.CourseProviderRepository;
 import java.util.List;
@@ -26,8 +28,9 @@ public class CourseProviderService {
    *
    * @return a list of all course providers
    */
-  public List<ProviderOrganization> getAll() {
-    return courseProviderRepository.findAll();
+  public List<CourseProviderResponse> getAll() {
+    return courseProviderRepository.findAll()
+            .stream().map(CourseProviderResponse::new).toList();
   }
 
   /**
@@ -36,7 +39,10 @@ public class CourseProviderService {
    * @param cp the course provider to create
    * @return the created course provider
    */
-  public ProviderOrganization save(ProviderOrganization cp) {
-    return courseProviderRepository.save(cp);
+  public CourseProviderResponse save(CourseProviderCreateRequest cp) {
+    ProviderOrganization provider = new ProviderOrganization();
+    provider.setName(cp.name());
+    provider.setCurrency(cp.currency());
+    return new CourseProviderResponse(courseProviderRepository.save(provider));
   }
 }

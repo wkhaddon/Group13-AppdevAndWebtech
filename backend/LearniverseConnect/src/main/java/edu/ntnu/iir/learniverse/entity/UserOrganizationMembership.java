@@ -1,6 +1,5 @@
 package edu.ntnu.iir.learniverse.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -23,13 +22,11 @@ import lombok.Getter;
 public class UserOrganizationMembership {
   @Id
   @ManyToOne
-  @JsonIgnore
   @JoinColumn(name = "user_id")
   private User user;
 
   @Id
   @ManyToOne
-  @JsonIgnore
   @JoinColumn(name = "organization_id")
   private ProviderOrganization organization;
 

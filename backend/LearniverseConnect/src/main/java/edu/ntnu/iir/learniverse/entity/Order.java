@@ -1,6 +1,5 @@
 package edu.ntnu.iir.learniverse.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,11 +13,13 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Entity class representing an order in the system.
  */
 @Getter
+@Setter
 @Entity
 @Table(name = "orders")
 public class Order {
@@ -27,7 +28,6 @@ public class Order {
   private Long id;
 
   @ManyToOne
-  @JsonIgnore
   @JoinColumn(name = "user_id")
   private User user;
 
