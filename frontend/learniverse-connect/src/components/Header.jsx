@@ -60,7 +60,6 @@ function Header() {
 
 					{isLoggedIn ? (
 						<>
-							<p>role: {role}, isLoggedIn: {isLoggedIn ? "true" : "false"}</p>
 							<Link to="/profile" onClick={closeMenu}>Account</Link>
 							<button onClick={() => { logout(); closeMenu(); }} className={styles.logout}>
 								Logout
