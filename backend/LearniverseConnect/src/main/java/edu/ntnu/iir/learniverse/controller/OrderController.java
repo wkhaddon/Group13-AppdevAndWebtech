@@ -3,7 +3,6 @@ package edu.ntnu.iir.learniverse.controller;
 import edu.ntnu.iir.learniverse.annotation.CurrentUser;
 import edu.ntnu.iir.learniverse.dto.OrderCreateRequest;
 import edu.ntnu.iir.learniverse.dto.OrderResponse;
-import edu.ntnu.iir.learniverse.entity.Order;
 import edu.ntnu.iir.learniverse.entity.User;
 import edu.ntnu.iir.learniverse.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;

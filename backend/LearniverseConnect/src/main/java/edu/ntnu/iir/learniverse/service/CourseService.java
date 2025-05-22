@@ -4,8 +4,12 @@ import edu.ntnu.iir.learniverse.dto.CourseCreateRequest;
 import edu.ntnu.iir.learniverse.dto.CourseResponse;
 import edu.ntnu.iir.learniverse.entity.Category;
 import edu.ntnu.iir.learniverse.entity.Course;
+import edu.ntnu.iir.learniverse.entity.ProviderOrganization;
 import edu.ntnu.iir.learniverse.entity.User;
+import edu.ntnu.iir.learniverse.exception.NoPermissionException;
+import edu.ntnu.iir.learniverse.exception.NotFoundException;
 import edu.ntnu.iir.learniverse.repository.CategoryRepository;
+import edu.ntnu.iir.learniverse.repository.CourseProviderRepository;
 import edu.ntnu.iir.learniverse.repository.CourseRepository;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class CourseService {
   private final CourseRepository courseRepository;
   private final CategoryRepository categoryRepository;
+  private final CourseProviderRepository courseProviderRepository;
 
   /**
    * Constructor for CourseService.
@@ -26,9 +31,11 @@ public class CourseService {
    * @param categoryRepository the repository for managing categories
    */
   public CourseService(CourseRepository courseRepository,
-                       CategoryRepository categoryRepository) {
+                       CategoryRepository categoryRepository,
+                       CourseProviderRepository courseProviderRepository) {
     this.courseRepository = courseRepository;
     this.categoryRepository = categoryRepository;
+    this.courseProviderRepository = courseProviderRepository;
   }
 
   /**
@@ -93,6 +100,10 @@ public class CourseService {
    * @return the created course
    */
   public CourseResponse createCourse(CourseCreateRequest course, User user) {
+    if (!isUserInOrganization(course.providerId(), user)) {
+      throw new NoPermissionException("User is not a member of the provider organization");
+    }
+
     Course newCourse = new Course();
     newCourse.setTitle(course.title());
     newCourse.setDescription(course.description());
@@ -104,16 +115,16 @@ public class CourseService {
     newCourse.setHoursPerWeek(course.hoursPerWeek());
     newCourse.setRelatedCertification(course.relatedCertification());
     newCourse.setIsHidden(course.isHidden());
+    newCourse.setProvider(courseProviderRepository.findById(course.providerId())
+        .orElseThrow(() -> new NotFoundException("Provider not found")));
 
     // Category from Id
     Long categoryId = course.categoryId();
     if (categoryId != null) {
       Category category = categoryRepository.findById(categoryId)
-          .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+              .orElseThrow(() -> new NotFoundException("Category not found"));
       newCourse.setCategory(category);
     }
-
-    // TODO: Make sure user is member of the provider organization
 
     return new CourseResponse(courseRepository.save(newCourse));
   }
@@ -125,7 +136,28 @@ public class CourseService {
    * @param user the user updating the course
    */
   public void deleteCourse(Long id, User user) {
-    // TODO: Make sure user is member of the provider organization
+    Optional<Course> courseOpt = courseRepository.findById(id);
+    if (courseOpt.isEmpty()) {
+      throw new NotFoundException("Course not found");
+    }
+
+    Course course = courseOpt.get();
+    if (!isUserInOrganization(course.getProvider().getId(), user)) {
+      throw new NoPermissionException("User is not a member of any provider organization");
+    }
+
     courseRepository.deleteById(id);
+  }
+
+  private boolean isUserInOrganization(Long providerId, User user) {
+    Optional<ProviderOrganization> providerOpt = courseProviderRepository.findById(providerId);
+
+    if (providerOpt.isEmpty()) {
+      return false;
+    }
+
+    ProviderOrganization providerOrganization = providerOpt.get();
+    return providerOrganization.getMemberships().stream()
+        .anyMatch(member -> member.getUser().getId().equals(user.getId()));
   }
 }

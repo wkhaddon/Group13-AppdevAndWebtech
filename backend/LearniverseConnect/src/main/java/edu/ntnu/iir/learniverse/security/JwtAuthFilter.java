@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class JwtAuthFilter extends GenericFilter {
-  private final JwtUtil jwtUtil;
+  private final transient JwtUtil jwtUtil;
 
   /**
    * Constructor for JwtAuthFilter.

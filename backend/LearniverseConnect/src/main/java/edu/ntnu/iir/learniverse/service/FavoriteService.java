@@ -4,6 +4,7 @@ import edu.ntnu.iir.learniverse.dto.FavoriteResponse;
 import edu.ntnu.iir.learniverse.entity.Course;
 import edu.ntnu.iir.learniverse.entity.Favorite;
 import edu.ntnu.iir.learniverse.entity.User;
+import edu.ntnu.iir.learniverse.exception.NotFoundException;
 import edu.ntnu.iir.learniverse.repository.CourseRepository;
 import edu.ntnu.iir.learniverse.repository.FavoriteRepository;
 import java.util.List;
@@ -48,7 +49,7 @@ public class FavoriteService {
    */
   public FavoriteResponse add(Long courseId, User user) {
     Course course = courseRepository.findById(courseId)
-        .orElseThrow(() -> new IllegalArgumentException("Course not found"));
+        .orElseThrow(() -> new NotFoundException("Course not found"));
 
     Favorite favorite = new Favorite();
     favorite.setCourse(course);
