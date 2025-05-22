@@ -22,7 +22,7 @@ async function checkAuth() {
 		return {
 			authenticated: true,
 			role: response.data?.role || 'ROLE_USER',
-			userId: response.data?.userId || null,
+			userId: response.data?.id || null,
 		};
 	} catch {
 		return {

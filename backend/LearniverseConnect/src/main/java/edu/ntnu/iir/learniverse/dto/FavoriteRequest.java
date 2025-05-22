@@ -1,20 +1,6 @@
-public class FavoriteRequest {
-  private Long userId;
-    private Long courseId;
+package edu.ntnu.iir.learniverse.dto;
 
-  public Long getUserId() {
-    return userId;
-  }
-
-  public void setUserId(Long userId) {
-    this.userId = userId;
-  }
-
-  public Long getCourseId() {
-    return courseId;
-  }
-
-  public void setCourseId(Long courseId) {
-    this.courseId = courseId;
-  }
+public record FavoriteRequest(
+    Long courseId
+) {
 }
