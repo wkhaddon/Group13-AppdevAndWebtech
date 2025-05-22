@@ -6,6 +6,7 @@ import edu.ntnu.iir.learniverse.entity.Course;
 import edu.ntnu.iir.learniverse.entity.Order;
 import edu.ntnu.iir.learniverse.entity.OrderCourse;
 import edu.ntnu.iir.learniverse.entity.User;
+import edu.ntnu.iir.learniverse.exception.NotFoundException;
 import edu.ntnu.iir.learniverse.repository.CourseRepository;
 import edu.ntnu.iir.learniverse.repository.OrderRepository;
 import java.math.BigDecimal;
@@ -62,7 +63,7 @@ public class OrderService {
   public OrderResponse save(OrderCreateRequest order, User user) {
     List<Course> courses = order.courses().stream()
         .map(course -> courseRepository.findById(course.courseId())
-            .orElseThrow(() -> new IllegalArgumentException("Course not found")))
+            .orElseThrow(() -> new NotFoundException("Course not found")))
         .toList();
 
     List<OrderCourse> orderCourses = courses.stream()

@@ -1,6 +1,7 @@
 package edu.ntnu.iir.learniverse.controller;
 
 import edu.ntnu.iir.learniverse.annotation.CurrentUser;
+import edu.ntnu.iir.learniverse.dto.FavoriteRequest;
 import edu.ntnu.iir.learniverse.dto.FavoriteResponse;
 import edu.ntnu.iir.learniverse.entity.User;
 import edu.ntnu.iir.learniverse.service.FavoriteService;
@@ -52,7 +53,7 @@ public class FavoriteController {
   /**
    * Add a new favorite for a user and course.
    *
-   * @param user the User to associate with the favorite
+   * @param request the request containing course ID
    * @return the created favorite
    */
   @Operation(
@@ -63,9 +64,9 @@ public class FavoriteController {
   @ApiResponse(responseCode = "404", description = "User or course not found")
   @PostMapping("/add")
   public ResponseEntity<FavoriteResponse> add(
-          @RequestBody Long courseId,
+          @RequestBody FavoriteRequest request,
           @CurrentUser User user) {
-    FavoriteResponse favorite = favoriteService.add(courseId, user);
+    FavoriteResponse favorite = favoriteService.add(request, user);
     return ResponseEntity.status(HttpStatus.CREATED).body(favorite);
   }
 

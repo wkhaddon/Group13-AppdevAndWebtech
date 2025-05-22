@@ -5,6 +5,7 @@ import edu.ntnu.iir.learniverse.dto.CourseCreateRequest;
 import edu.ntnu.iir.learniverse.dto.CourseResponse;
 import edu.ntnu.iir.learniverse.entity.User;
 import edu.ntnu.iir.learniverse.service.CourseService;
+import edu.ntnu.iir.learniverse.util.ApiUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,13 +15,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Controller for handling course-related requests.
@@ -50,7 +45,7 @@ public class CourseController {
   @PermitAll
   @GetMapping
   public List<CourseResponse> getAllCourses() {
-    return courseService.getAllCourses();
+    return courseService.getAllCourses(false);
   }
 
   /**
@@ -93,7 +88,33 @@ public class CourseController {
       @RequestParam(name = "minPrice", required = false) Double minPrice,
       @RequestParam(name = "maxPrice", required = false) Double maxPrice
   ) {
-    return courseService.searchCourses(query, categoryId, minPrice, maxPrice);
+    return courseService.searchCourses(query, categoryId, minPrice, maxPrice, false);
+  }
+
+  /**
+   * Handles the request to search for courses based on query parameters for admins.
+   *
+   * @param query The search query string - null to search all courses
+   * @param categoryId The ID of the category to filter by - null to search all categories
+   * @param minPrice The minimum price to filter by - null to ignore minimum price
+   * @param maxPrice The maximum price to filter by - null to ignore maximum price
+   * @return a list of courses matching the search criteria
+   */
+  @Operation(
+          summary = "Search courses for admins",
+          description = "Search for courses by query, category, and optional price range"
+  )
+  @ApiResponse(responseCode = "200", description = "Successfully retrieved search results")
+  @ApiResponse(responseCode = "400", description = "Invalid query parameters")
+  @PreAuthorize("hasRole('ADMIN')")
+  @GetMapping("/search/admin")
+  public List<CourseResponse> searchCoursesAdmin(
+          @RequestParam(name = "q", required = false) String query,
+          @RequestParam(name = "category", required = false) Long categoryId,
+          @RequestParam(name = "minPrice", required = false) Double minPrice,
+          @RequestParam(name = "maxPrice", required = false) Double maxPrice
+  ) {
+    return courseService.searchCourses(query, categoryId, minPrice, maxPrice, true);
   }
 
   /**
@@ -125,7 +146,22 @@ public class CourseController {
   @PermitAll
   @GetMapping("/maxPrice")
   public ResponseEntity<Long> getMaxPrice() {
-    return ResponseEntity.ok(courseService.getMaxPrice());
+    return ResponseEntity.ok(courseService.getMaxPrice(false));
+  }
+
+  /**
+   * Handles the request to get the minimum price of courses for admins.
+   *
+   * @return the minimum price of courses
+   */
+  @Operation(
+          summary = "Get the maximum price of courses for admins",
+          description = "Retrieve the maximum price of courses")
+  @ApiResponse(responseCode = "200", description = "Successfully retrieved the maximum price")
+  @PreAuthorize("hasRole('ADMIN')")
+  @GetMapping("/maxPrice/admin")
+  public ResponseEntity<Long> getMaxPriceAdmin() {
+    return ResponseEntity.ok(courseService.getMaxPrice(true));
   }
 
   /**
@@ -138,10 +174,28 @@ public class CourseController {
   @Operation(summary = "Delete a course", description = "Delete a course by its ID")
   @ApiResponse(responseCode = "204", description = "Successfully deleted the course")
   @DeleteMapping("/{id}")
-  @PreAuthorize("hasAnyRole('PROVIDER', 'SUPPORT', 'ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<Void> deleteCourse(@PathVariable Long id,
                                            @CurrentUser User user) {
     courseService.deleteCourse(id, user);
     return ResponseEntity.noContent().build();
+  }
+
+  /**
+   * Handles the request to update a course.
+   *
+   * @param id the ID of the course to update
+   * @param course the updated course data
+   * @return the updated course
+   */
+  @Operation(summary = "Update a course", description = "Update an existing course")
+  @ApiResponse(responseCode = "200", description = "Successfully updated the course")
+  @ApiResponse(responseCode = "404", description = "Course not found")
+  @ApiResponse(responseCode = "400", description = "Invalid course data")
+  @PreAuthorize("hasRole('ADMIN')")
+  @PatchMapping("/{id}/visibility")
+  public ResponseEntity<?> toggleVisibility(@PathVariable Long id) {
+    courseService.toggleVisibility(id);
+    return ResponseEntity.ok(ApiUtils.message("Course visibility toggled"));
   }
 }

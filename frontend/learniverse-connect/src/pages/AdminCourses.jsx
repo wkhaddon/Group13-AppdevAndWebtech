@@ -1,47 +1,42 @@
-import styles from './Courses.module.scss';
+import styles from './AdminCourses.module.scss';
 import { useEffect, useState } from 'react';
 import CourseFilter from '@/components/CourseFilter';
 import api from '@/api/axios';
 import { useSearchParams } from 'react-router-dom';
 
-import CourseCard from '@/components/CourseCard';
+function AdminCourses() {
+	const MIN = 0;
 
-const MIN = 0;
-
-function Courses() {
 	const [courses, setCourses] = useState([]);
 	const [category, setCategory] = useState('');
 	const [categories, setCategories] = useState([]);
 	const [searchQuery, setSearchQuery] = useState('');
-	const [maxCoursePrice, setMaxCoursePrice] = useState(null); // start with null
+	const [maxCoursePrice, setMaxCoursePrice] = useState(null);
 	const [priceRange, setPriceRange] = useState([MIN, null]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 	const [searchParams, setSearchParams] = useSearchParams();
 
-	// Fetch categories for filter dropdown
 	useEffect(() => {
 		api.get('/categories')
 			.then(res => setCategories(res.data))
 			.catch(err => console.error('Failed to load categories', err));
 	}, []);
 
-	// Fetch max price to initialize slider range
 	useEffect(() => {
-		api.get('/courses/maxPrice')
-			.then(res => {
-				const max = Math.ceil(parseFloat(res.data));
-				setMaxCoursePrice(max);
-				setPriceRange([MIN, max]);
-			})
-			.catch(err => {
-				console.error('Failed to determine max price', err);
-				setMaxCoursePrice(10000); // fallback
-				setPriceRange([MIN, 10000]);
-			});
+		api.get('/courses/maxPrice/admin')
+		.then(res => {
+			const max = Math.ceil(parseFloat(res.data));
+			setMaxCoursePrice(max);
+			setPriceRange([MIN, max]);
+		})
+		.catch(err => {
+			console.error('Failed to determine max price', err);
+			setMaxCoursePrice(10000);
+			setPriceRange([MIN, 10000]);
+		});
 	}, []);
 
-	// Search courses when filters change — only after max price is loaded
 	useEffect(() => {
 		if (maxCoursePrice === null) return;
 
@@ -63,21 +58,19 @@ function Courses() {
 		if (!isNaN(min) && min > MIN) params.append('minPrice', min);
 		if (!isNaN(max) && max < maxCoursePrice) params.append('maxPrice', max);
 
-		const endpoint = `/courses/search?${params.toString()}`;
 		setLoading(true);
-		api.get(endpoint)
-			.then((response) => {
-				setCourses(response.data);
+		api.get(`/courses/search/admin?${params.toString()}`)
+			.then(res => {
+				setCourses(res.data);
 				setError(null);
 			})
-			.catch((err) => {
-				console.error('Failed to fetch courses:', err);
-				setError('Failed to load courses. Maybe you´re not logged in?');
+			.catch(err => {
+				console.error('Failed to fetch admin courses:', err);
+				setError('Failed to load courses. Are you an admin?');
 			})
 			.finally(() => setLoading(false));
 	}, [searchParams, maxCoursePrice]);
 
-	// Handle user filter actions
 	const handleSearch = () => {
 		const params = {};
 		if (searchQuery) params.q = searchQuery;
@@ -92,6 +85,15 @@ function Courses() {
 		setCategory('');
 		setPriceRange([MIN, maxCoursePrice]);
 		setSearchParams({});
+	};
+
+	const toggleVisibility = async (id) => {
+		try {
+			await api.patch(`/courses/${id}/visibility`);
+			handleSearch();
+		} catch (err) {
+			console.error('Failed to toggle visibility:', err);
+		}
 	};
 
 	return (
@@ -111,23 +113,25 @@ function Courses() {
 
 			<main>
 				{loading && <p>Loading courses...</p>}
-
 				{error ? (
-					<p className={styles.error}>{error}</p>
+				<p className={styles.error}>{error}</p>
 				) : (
-					<>
-						{!loading && courses.length === 0 && <p>No courses found.</p>}
-
-						<div className={styles.courseList}>
-							{courses.map((course) => (
-								<CourseCard key={course.id} course={course} />
-							))}
-						</div>
-					</>
+					<div className={styles.courseList}>
+						{courses.map(course => (
+							<div key={course.id} className={styles.courseCard}>
+								<h3>{course.title}</h3>
+								<p>{course.description}</p>
+								<p>Hidden: {course.isHidden ? 'Yes' : 'No'}</p>
+								<button onClick={() => toggleVisibility(course.id)}>
+									{course.isHidden ? 'Unhide' : 'Hide'}
+								</button>
+							</div>
+						))}
+					</div>
 				)}
 			</main>
 		</div>
 	);
 }
 
-export default Courses;
+export default AdminCourses;

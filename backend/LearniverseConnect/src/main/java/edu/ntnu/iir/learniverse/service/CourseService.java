@@ -4,8 +4,12 @@ import edu.ntnu.iir.learniverse.dto.CourseCreateRequest;
 import edu.ntnu.iir.learniverse.dto.CourseResponse;
 import edu.ntnu.iir.learniverse.entity.Category;
 import edu.ntnu.iir.learniverse.entity.Course;
+import edu.ntnu.iir.learniverse.entity.ProviderOrganization;
 import edu.ntnu.iir.learniverse.entity.User;
+import edu.ntnu.iir.learniverse.exception.NoPermissionException;
+import edu.ntnu.iir.learniverse.exception.NotFoundException;
 import edu.ntnu.iir.learniverse.repository.CategoryRepository;
+import edu.ntnu.iir.learniverse.repository.CourseProviderRepository;
 import edu.ntnu.iir.learniverse.repository.CourseRepository;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class CourseService {
   private final CourseRepository courseRepository;
   private final CategoryRepository categoryRepository;
+  private final CourseProviderRepository courseProviderRepository;
 
   /**
    * Constructor for CourseService.
@@ -26,18 +31,21 @@ public class CourseService {
    * @param categoryRepository the repository for managing categories
    */
   public CourseService(CourseRepository courseRepository,
-                       CategoryRepository categoryRepository) {
+                       CategoryRepository categoryRepository,
+                       CourseProviderRepository courseProviderRepository) {
     this.courseRepository = courseRepository;
     this.categoryRepository = categoryRepository;
+    this.courseProviderRepository = courseProviderRepository;
   }
 
   /**
    * Get all courses.
    *
+   * @param showHidden whether to include hidden courses
    * @return a list of all courses
    */
-  public List<CourseResponse> getAllCourses() {
-    List<Course> courses = courseRepository.findAll();
+  public List<CourseResponse> getAllCourses(boolean showHidden) {
+    List<Course> courses = courseRepository.findAll(showHidden);
 
     return courses.stream()
         .map(CourseResponse::new)
@@ -65,12 +73,13 @@ public class CourseService {
    * @return a list of courses matching the search criteria
    */
   public List<CourseResponse> searchCourses(String query, Long categoryId,
-                                            Double minPrice, Double maxPrice) {
+                                            Double minPrice, Double maxPrice,
+                                            boolean showHidden) {
     if (query == null && categoryId == null && minPrice == null && maxPrice == null) {
-      return getAllCourses();
+      return getAllCourses(showHidden);
     }
 
-    List<Course> courses = courseRepository.searchCourses(query, categoryId, minPrice, maxPrice);
+    List<Course> courses = courseRepository.searchCourses(query, categoryId, minPrice, maxPrice, showHidden);
     return courses.stream()
         .map(CourseResponse::new)
         .toList();
@@ -81,8 +90,8 @@ public class CourseService {
    *
    * @return the minimum price of all courses
    */
-  public Long getMaxPrice() {
-    return courseRepository.getMaxPrice();
+  public Long getMaxPrice(boolean showHidden) {
+    return courseRepository.getMaxPrice(showHidden);
   }
 
   /**
@@ -93,6 +102,10 @@ public class CourseService {
    * @return the created course
    */
   public CourseResponse createCourse(CourseCreateRequest course, User user) {
+    if (!isUserInOrganization(course.providerId(), user)) {
+      throw new NoPermissionException("User is not a member of the provider organization");
+    }
+
     Course newCourse = new Course();
     newCourse.setTitle(course.title());
     newCourse.setDescription(course.description());
@@ -104,16 +117,16 @@ public class CourseService {
     newCourse.setHoursPerWeek(course.hoursPerWeek());
     newCourse.setRelatedCertification(course.relatedCertification());
     newCourse.setIsHidden(course.isHidden());
+    newCourse.setProvider(courseProviderRepository.findById(course.providerId())
+        .orElseThrow(() -> new NotFoundException("Provider not found")));
 
     // Category from Id
     Long categoryId = course.categoryId();
     if (categoryId != null) {
       Category category = categoryRepository.findById(categoryId)
-          .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+              .orElseThrow(() -> new NotFoundException("Category not found"));
       newCourse.setCategory(category);
     }
-
-    // TODO: Make sure user is member of the provider organization
 
     return new CourseResponse(courseRepository.save(newCourse));
   }
@@ -125,7 +138,40 @@ public class CourseService {
    * @param user the user updating the course
    */
   public void deleteCourse(Long id, User user) {
-    // TODO: Make sure user is member of the provider organization
+    Optional<Course> courseOpt = courseRepository.findById(id);
+    if (courseOpt.isEmpty()) {
+      throw new NotFoundException("Course not found");
+    }
+
+    Course course = courseOpt.get();
+    if (!isUserInOrganization(course.getProvider().getId(), user)) {
+      throw new NoPermissionException("User is not a member of any provider organization");
+    }
+
     courseRepository.deleteById(id);
+  }
+
+  /**
+   * Toggle the visibility of a course.
+   *
+   * @param courseId the ID of the course to toggle visibility for
+   */
+  public void toggleVisibility(Long courseId) {
+    Course course = courseRepository.findById(courseId, true)
+            .orElseThrow(() -> new NotFoundException("Course not found: " + courseId));
+    course.setIsHidden(!course.getIsHidden());
+    courseRepository.save(course);
+  }
+
+  private boolean isUserInOrganization(Long providerId, User user) {
+    Optional<ProviderOrganization> providerOpt = courseProviderRepository.findById(providerId);
+
+    if (providerOpt.isEmpty()) {
+      return false;
+    }
+
+    ProviderOrganization providerOrganization = providerOpt.get();
+    return providerOrganization.getMemberships().stream()
+        .anyMatch(member -> member.getUser().getId().equals(user.getId()));
   }
 }

@@ -13,6 +13,7 @@
 	}
 }
 
+
 .courseList {
 	width: 100%;
 	display: grid;
@@ -25,4 +26,20 @@
 	color: var(--danger);
 	font-weight: bold;
 	padding: $spacing-sm;
+}
+
+.toggleButton {
+	margin-top: 1rem;
+	padding: 0.5rem 1rem;
+	font-size: 0.95rem;
+	background-color: var(--accent);
+	color: var(--text-dark);
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.toggleButton:hover {
+	background-color: var(--accent-hover);
 }

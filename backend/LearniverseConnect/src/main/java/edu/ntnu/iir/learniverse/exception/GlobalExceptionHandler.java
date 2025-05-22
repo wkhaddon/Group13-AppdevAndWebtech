@@ -1,43 +1,84 @@
 package edu.ntnu.iir.learniverse.exception;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 /**
  * Global exception handler for the application.
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+  private static final org.slf4j.Logger logger =
+      org.slf4j.LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
   /**
-   * Handles IllegalArgumentException.
+   * Handles NoPermissionException.
    *
    * @param e the exception
-   * @return a ResponseEntity with the error message and status
+   * @return a ResponseEntity with the error message
    */
-  @ExceptionHandler(IllegalArgumentException.class)
-  public ResponseEntity<?> handleIllegalArgument(IllegalArgumentException e) {
+  @ExceptionHandler(NoPermissionException.class)
+  public ResponseEntity<ErrorResponse> handleNoPermission(NoPermissionException e) {
+    return buildError(HttpStatus.FORBIDDEN, e.getMessage());
+  }
+
+  /**
+   * Handles UnAuthorizedException.
+   *
+   * @param e the exception
+   * @return a ResponseEntity with the error message
+   */
+  @ExceptionHandler(UnAuthorizedException.class)
+  public ResponseEntity<ErrorResponse> handleNotAuthenticated(UnAuthorizedException e) {
+    return buildError(HttpStatus.UNAUTHORIZED, e.getMessage());
+  }
+
+  /**
+   * Handles NotFoundException.
+   *
+   * @param e the exception
+   * @return a ResponseEntity with the error message
+   */
+  @ExceptionHandler(NotFoundException.class)
+  public ResponseEntity<ErrorResponse> handleNotFound(NotFoundException e) {
+    return buildError(HttpStatus.NOT_FOUND, e.getMessage());
+  }
+
+  /**
+   * Handles ConflictException.
+   *
+   * @param e the exception
+   * @return a ResponseEntity with the error message
+   */
+  @ExceptionHandler(ConflictException.class)
+  public ResponseEntity<ErrorResponse> handleConflict(ConflictException e) {
+    return buildError(HttpStatus.CONFLICT, e.getMessage());
+  }
+
+  /**
+   * Handles BadRequestException.
+   *
+   * @param e the exception
+   * @return a ResponseEntity with the error message
+   */
+  @ExceptionHandler(BadRequestException.class)
+  public ResponseEntity<ErrorResponse> handleBadRequest(BadRequestException e) {
     return buildError(HttpStatus.BAD_REQUEST, e.getMessage());
   }
 
   /**
-   * Handles MethodArgumentNotValidException.
+   * Handles NoResourceFoundException.
    *
    * @param e the exception
-   * @return a ResponseEntity with the validation errors
+   * @return a ResponseEntity with the error message
    */
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException e) {
-    Map<String, String> errors = new HashMap<>();
-    e.getBindingResult().getFieldErrors().forEach(error ->
-        errors.put(error.getField(), error.getDefaultMessage()));
-    return ResponseEntity.badRequest().body(errors);
+  @ExceptionHandler(NoResourceFoundException.class)
+  public ResponseEntity<ErrorResponse> handleNoResourceFound(NoResourceFoundException e) {
+    return buildError(HttpStatus.NOT_FOUND, e.getMessage());
   }
 
   /**
@@ -47,10 +88,8 @@ public class GlobalExceptionHandler {
    * @return a ResponseEntity with a generic error message
    */
   @ExceptionHandler(Exception.class)
-  public ResponseEntity<?> handleUnexpected(Exception e) {
-    // TODO: Remove this in production
-    e.printStackTrace();
-
+  public ResponseEntity<ErrorResponse> handleUnexpected(Exception e) {
+    logger.error("Unexpected error", e);
     return buildError(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
   }
 
@@ -61,14 +100,14 @@ public class GlobalExceptionHandler {
    * @param message the error message
    * @return a ResponseEntity with the error response
    */
-  private ResponseEntity<?> buildError(HttpStatus status, String message) {
+  private ResponseEntity<ErrorResponse> buildError(HttpStatus status, String message) {
     return new ResponseEntity<>(new ErrorResponse(status.value(), message), status);
   }
 
   /**
    * Error response class.
    */
-  private static class ErrorResponse {
+  public static class ErrorResponse {
     public final int status;
     public final String message;
     public final LocalDateTime timestamp;
