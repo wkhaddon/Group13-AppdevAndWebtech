@@ -1,7 +1,9 @@
 package edu.ntnu.iir.learniverse.controller;
 
+import edu.ntnu.iir.learniverse.annotation.CurrentUser;
+import edu.ntnu.iir.learniverse.dto.CourseCreateRequest;
 import edu.ntnu.iir.learniverse.dto.CourseResponse;
-import edu.ntnu.iir.learniverse.entity.Course;
+import edu.ntnu.iir.learniverse.entity.User;
 import edu.ntnu.iir.learniverse.service.CourseService;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.http.HttpStatus;
@@ -65,8 +67,9 @@ public class CourseController {
   @ApiResponse(responseCode = "201", description = "Successfully created the course")
   @PermitAll
   @PostMapping
-  public ResponseEntity<Course> createCourse(@RequestBody Course course) {
-    Course createdCourse = courseService.createCourse(course);
+  public ResponseEntity<CourseResponse> createCourse(@RequestBody CourseCreateRequest course,
+                                                     @CurrentUser User user) {
+    CourseResponse createdCourse = courseService.createCourse(course, user);
     return ResponseEntity.status(HttpStatus.CREATED).body(createdCourse);
   }
 
@@ -82,8 +85,9 @@ public class CourseController {
   @ApiResponse(responseCode = "204", description = "Successfully deleted the course")
   @DeleteMapping("/{id}")
   @PreAuthorize("hasAnyRole('PROVIDER', 'SUPPORT', 'ADMIN')")
-  public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
-    courseService.deleteCourse(id);
+  public ResponseEntity<Void> deleteCourse(@PathVariable Long id,
+                                           @CurrentUser User user) {
+    courseService.deleteCourse(id, user);
     return ResponseEntity.noContent().build();
   }
 }

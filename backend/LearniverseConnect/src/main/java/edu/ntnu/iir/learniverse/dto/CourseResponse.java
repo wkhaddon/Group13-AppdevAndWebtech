@@ -1,33 +1,43 @@
 package edu.ntnu.iir.learniverse.dto;
 
 import edu.ntnu.iir.learniverse.entity.Course;
+import edu.ntnu.iir.learniverse.entity.CourseLevel;
 
-public class CourseResponse {
-  public final int id;
-  public final String title;
-  public final String description;
-  public final String level;
-  public final String ectsCredits;
-  public final String hoursPerWeek;
-  public final String sessionStartDate;
-  public final String sessionEndDate;
-  public final String relatedCertification;
-  public final int categoryId;
-  public final String categoryName;
-  public final String providerName;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
+public record CourseResponse(
+    Long id,
+    String title,
+    String description,
+    CourseLevel level,
+    BigDecimal price,
+    LocalDate startDate,
+    LocalDate endDate,
+    BigDecimal ectsCredits,
+    BigDecimal hoursPerWeek,
+    String relatedCertification,
+    Long categoryId,
+    String categoryName,
+    Long providerId,
+    String providerName
+) {
   public CourseResponse(Course course) {
-    this.id = course.getId().intValue();
-    this.title = course.getTitle();
-    this.description = course.getDescription();
-    this.level = course.getLevel().name();
-    this.ectsCredits = course.getEctsCredits() != null ? course.getEctsCredits().toString() : null;
-    this.hoursPerWeek = course.getHoursPerWeek() != null ? course.getHoursPerWeek().toString() : null;
-    this.sessionStartDate = course.getSessionStartDate() != null ? course.getSessionStartDate().toString() : null;
-    this.sessionEndDate = course.getSessionEndDate() != null ? course.getSessionEndDate().toString() : null;
-    this.relatedCertification = course.getRelatedCertification();
-    this.categoryId = course.getCategory().getId().intValue();
-    this.categoryName = course.getCategory().getName();
-    this.providerName = course.getProvider() != null ? course.getProvider().getName() : null;
+    this(
+        course.getId(),
+        course.getTitle(),
+        course.getDescription(),
+        course.getLevel(),
+        course.getPrice(),
+        course.getSessionStartDate(),
+        course.getSessionEndDate(),
+        course.getEctsCredits(),
+        course.getHoursPerWeek(),
+        course.getRelatedCertification(),
+        course.getCategory() != null ? course.getCategory().getId() : null,
+        course.getCategory() != null ? course.getCategory().getName() : null,
+        course.getProvider() != null ? course.getProvider().getId() : null,
+        course.getProvider() != null ? course.getProvider().getName() : null
+    );
   }
 }

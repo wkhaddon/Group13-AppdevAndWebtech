@@ -3,11 +3,13 @@ package edu.ntnu.iir.learniverse.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "courses")
 public class Course {
@@ -23,7 +25,7 @@ public class Course {
   private CourseLevel level;
 
   private BigDecimal price;
-  private boolean isHidden;
+  private Boolean isHidden;
 
   @Column(name = "session_start_date")
   private LocalDate sessionStartDate;

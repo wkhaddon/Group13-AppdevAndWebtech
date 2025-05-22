@@ -2,9 +2,15 @@ package edu.ntnu.iir.learniverse.service;
 
 import edu.ntnu.iir.learniverse.dto.LoginRequest;
 import edu.ntnu.iir.learniverse.dto.RegisterRequest;
+import edu.ntnu.iir.learniverse.dto.UserDto;
 import edu.ntnu.iir.learniverse.entity.GlobalRole;
 import edu.ntnu.iir.learniverse.entity.User;
 import edu.ntnu.iir.learniverse.repository.UserRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +27,7 @@ public class AuthService {
     this.passwordEncoder = passwordEncoder;
   }
 
-  public User register(RegisterRequest request) {
+  public UserDto register(RegisterRequest request) {
     String normalizedEmail = normalizeEmail(request.email);
 
     // Check for existing username/email
@@ -39,10 +45,11 @@ public class AuthService {
     user.setPasswordHash(passwordEncoder.encode(request.password));
     user.setGlobalRole(GlobalRole.USER);
     user.setCreatedAt(LocalDateTime.now());
-    return userRepository.save(user);
+
+    return UserDto.fromUser(userRepository.save(user));
   }
 
-  public Optional<User> login(LoginRequest request) {
+  public Optional<UserDto> login(LoginRequest request) {
     Optional<User> userOpt;
 
     // Determine if it's an email (contains @) or username
@@ -53,9 +60,22 @@ public class AuthService {
     }
 
     return userOpt
-        .filter(user -> passwordEncoder.matches(request.password, user.getPasswordHash()));
+        .filter(user -> passwordEncoder.matches(request.password, user.getPasswordHash()))
+        .map(UserDto::fromUser);
   }
 
+  public Optional<UserDto> validateToken() {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+    if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {
+      return Optional.empty();
+    }
+
+    String username = auth.getName();
+
+    return userRepository.findByUsernameIgnoreCase(username)
+        .map(UserDto::fromUser);
+  }
 
   private String normalizeEmail(String email) {
     String[] parts = email.split("@");

@@ -1,6 +1,6 @@
 package edu.ntnu.iir.learniverse.service;
 
-import edu.ntnu.iir.learniverse.entity.Category;
+import edu.ntnu.iir.learniverse.dto.CategoryDto;
 import edu.ntnu.iir.learniverse.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +15,12 @@ public class CategoryService {
     this.categoryRepository = categoryRepository;
   }
 
-  public List<Category> getAll() {
-    return categoryRepository.findAll();
+  public List<CategoryDto> getAll() {
+    return categoryRepository.findAll().stream().map(CategoryDto::fromCategory).toList();
   }
 
-  public Optional<Category> getById(Long id) {
-    return categoryRepository.findById(id);
+  public Optional<CategoryDto> getById(Long id) {
+    return categoryRepository.findById(id)
+        .map(CategoryDto::fromCategory);
   }
 }
