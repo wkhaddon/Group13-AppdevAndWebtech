@@ -1,0 +1,111 @@
+{
+	"info": {
+	"name": "Learniverse",
+	"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+	{
+		"name": "Login (Regular User)",
+		"request": {
+		"method": "POST",
+		"header": [
+			{ "key": "Content-Type", "value": "application/json" }
+		],
+		"url": {
+			"raw": "http://localhost:8443/api/auth/login",
+			"protocol": "http",
+			"host": ["localhost"],
+			"port": "8443",
+			"path": ["api", "auth", "login"]
+		},
+		"body": {
+			"mode": "raw",
+			"raw": "{\n  \"identifier\": \"dave\",\n  \"password\": \"Dangerous2024\"\n}"
+		}
+		},
+		"response": [],
+		"event": [
+		{
+			"listen": "test",
+			"script": {
+			"exec": [
+				"let res = pm.response.json();",
+				"pm.collectionVariables.set(\"token\", res.token);",
+				"pm.collectionVariables.set(\"userId\", res.userId);",
+				"pm.test(\"Login successful\", () => pm.response.code === 200);"
+			],
+			"type": "text/javascript"
+			}
+		}
+		]
+	},
+	{
+		"name": "Get All Courses (Public)",
+		"request": {
+		"method": "GET",
+		"header": [],
+		"url": {
+			"raw": "http://localhost:8443/api/courses",
+			"protocol": "http",
+			"host": ["localhost"],
+			"port": "8443",
+			"path": ["api", "courses"]
+		}
+		},
+		"response": []
+	},
+	{
+		"name": "Add to Favorites",
+		"request": {
+		"method": "POST",
+		"header": [
+			{ "key": "Content-Type", "value": "application/json" },
+			{ "key": "Authorization", "value": "Bearer {{token}}" }
+		],
+		"url": {
+			"raw": "http://localhost:8443/api/favorites/add",
+			"protocol": "http",
+			"host": ["localhost"],
+			"port": "8443",
+			"path": ["api", "favorites", "add"]
+		},
+		"body": {
+			"mode": "raw",
+			"raw": "1"
+		}
+		},
+		"response": []
+	},
+	{
+		"name": "Get Favorites by User",
+		"request": {
+		"method": "GET",
+		"header": [],
+		"url": {
+			"raw": "http://localhost:8443/api/favorites/user/{{userId}}",
+			"protocol": "http",
+			"host": ["localhost"],
+			"port": "8443",
+			"path": ["api", "favorites", "user", "{{userId}}"]
+		}
+		},
+		"response": []
+	},
+	{
+		"name": "Delete Favorite by ID",
+		"request": {
+		"method": "DELETE",
+		"header": [],
+		"url": {
+			"raw": "http://localhost:8443/api/favorites/1",
+			"protocol": "http",
+			"host": ["localhost"],
+			"port": "8443",
+			"path": ["api", "favorites", "1"]
+		}
+		},
+		"response": []
+	}
+	],
+	"variable": []
+}
