@@ -3,6 +3,7 @@ package edu.ntnu.iir.learniverse.config;
 import edu.ntnu.iir.learniverse.security.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,8 +18,20 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.List;
 
 @Configuration
-@EnableMethodSecurity
+@EnableMethodSecurity(jsr250Enabled = true)
 public class SecurityConfig {
+  private static final String[] PUBLIC_GET_ENDPOINTS = {
+        "/api/auth/**",
+        "/api/courses",
+        "/api/courses/**",
+        "/api/categories",
+        "/api/categories/**",
+  };
+
+  private static final String[] PUBLIC_POST_ENDPOINTS = {
+        "/api/auth/**",
+  };
+
   @Bean
   public BCryptPasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
@@ -29,7 +42,9 @@ public class SecurityConfig {
     http
         .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for simplicity (cookies)
         .authorizeHttpRequests(auth -> auth
-            .anyRequest().authenticated() // All other requests require authentication
+                .requestMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS).permitAll()
+                .requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINTS).permitAll()
+                .anyRequest().authenticated()
         )
         .cors(Customizer.withDefaults()) // Enable CORS with default settings
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
