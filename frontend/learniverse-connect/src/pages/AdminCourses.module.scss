@@ -1,0 +1,45 @@
+@use '@/styles/main' as *;
+
+.container {
+	display: grid;
+	grid-template-columns: 300px 1fr;
+	gap: $spacing-lg;
+	padding: $spacing-lg;
+	align-items: flex-start;
+	background-color: var(--bg);
+
+	@include respond(sm) {
+		grid-template-columns: 1fr;
+	}
+}
+
+
+.courseList {
+	width: 100%;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 1.5rem;
+	justify-content: center;
+}
+
+.error {
+	color: var(--danger);
+	font-weight: bold;
+	padding: $spacing-sm;
+}
+
+.toggleButton {
+	margin-top: 1rem;
+	padding: 0.5rem 1rem;
+	font-size: 0.95rem;
+	background-color: var(--accent);
+	color: var(--text-dark);
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.toggleButton:hover {
+	background-color: var(--accent-hover);
+}

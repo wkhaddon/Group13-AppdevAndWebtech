@@ -1,13 +1,25 @@
 package edu.ntnu.iir.learniverse.entity;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
+/**
+ * Entity class representing a course.
+ */
 @Getter
+@Setter
 @Entity
 @Table(name = "courses")
 public class Course {
@@ -23,7 +35,7 @@ public class Course {
   private CourseLevel level;
 
   private BigDecimal price;
-  private boolean isHidden;
+  private Boolean isHidden;
 
   @Column(name = "session_start_date")
   private LocalDate sessionStartDate;
@@ -41,12 +53,10 @@ public class Course {
   private String relatedCertification;
 
   @ManyToOne
-  @JsonIgnore
   @JoinColumn(name = "category_id")
   private Category category;
 
   @ManyToOne
-  @JsonIgnore
   @JoinColumn(name = "provider_id")
   private ProviderOrganization provider;
 }

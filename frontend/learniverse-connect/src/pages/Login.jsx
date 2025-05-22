@@ -45,7 +45,7 @@ function Login() {
 					type='text'
 					name='identifier'
 					placeholder='Username or Email'
-					value={form.email}
+					value={form.identifier}
 					onChange={handleChange}
 					required
 				/>

@@ -10,10 +10,10 @@ const AuthContext = createContext({
 });
 
 export const Role = {
-	User: 'ROLE_USER',
-	Provider: 'ROLE_PROVIDER',
-	Support: 'ROLE_SUPPORT',
-	Admin: 'ROLE_ADMIN',
+	User: 'USER',
+	Provider: 'PROVIDER',
+	Support: 'SUPPORT',
+	Admin: 'ADMIN',
 };
 
 async function checkAuth() {

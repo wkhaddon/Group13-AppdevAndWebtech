@@ -1,11 +1,20 @@
 package edu.ntnu.iir.learniverse.entity;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
+/**
+ * Entity class representing a provider organization in the system.
+ */
 @Getter
+@Setter
 @Entity
 @Table(name = "provider_organizations")
 public class ProviderOrganization {

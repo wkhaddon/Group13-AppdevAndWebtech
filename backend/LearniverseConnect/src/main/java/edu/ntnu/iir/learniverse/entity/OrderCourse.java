@@ -1,10 +1,20 @@
 package edu.ntnu.iir.learniverse.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Setter;
 
+/**
+ * Entity class representing a course in an order.
+ */
 @Getter
+@Setter
 @Entity
 @Table(name = "order_courses")
 public class OrderCourse {
@@ -13,12 +23,10 @@ public class OrderCourse {
   private Long id;
 
   @ManyToOne
-  @JsonIgnore
   @JoinColumn(name = "order_id")
   private Order order;
 
   @ManyToOne
-  @JsonIgnore
   @JoinColumn(name = "course_id")
   private Course course;
 

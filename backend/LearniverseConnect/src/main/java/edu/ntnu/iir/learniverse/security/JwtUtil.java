@@ -1,19 +1,27 @@
 package edu.ntnu.iir.learniverse.security;
 
 import edu.ntnu.iir.learniverse.config.Env;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import java.util.Date;
+import javax.crypto.SecretKey;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
-import java.util.Date;
-
+/**
+ * Utility class for handling JWT tokens.
+ */
 @Component
 public class JwtUtil {
   private final SecretKey key = Keys.hmacShaKeyFor(Env.get(Env.EnvVar.JWT_SECRET).getBytes());
   public static final long EXPIRATION_TIME_MILLIS = 1000L * 60L * 60L * 24L; // 24h
 
+  /**
+   * Validates the environment variables required for JWT generation.
+   */
   @PostConstruct
   public void validateEnvVars() {
     String jwtSecret = Env.get(Env.EnvVar.JWT_SECRET);
@@ -26,6 +34,13 @@ public class JwtUtil {
     }
   }
 
+  /**
+   * Generates a JWT token for the given username and role.
+   *
+   * @param username the username for which the token is generated
+   * @param role the role of the user
+   * @return the generated JWT token
+   */
   public String generateToken(String username, String role) {
     return Jwts.builder()
         .subject(username)
@@ -36,6 +51,13 @@ public class JwtUtil {
         .compact();
   }
 
+  /**
+   * Validates the given JWT token.
+   *
+   * @param token the JWT token to validate
+   * @return the parsed JWT token
+   * @throws InvalidJwtException if the token is invalid
+   */
   public Jws<Claims> validateToken(String token) throws InvalidJwtException {
     try {
       return Jwts.parser()
@@ -47,11 +69,22 @@ public class JwtUtil {
     }
   }
 
-
+  /**
+   * Extracts the username from the given JWT token.
+   *
+   * @param token the JWT token
+   * @return the username extracted from the token
+   */
   public String getUsernameFromToken(String token) {
     return validateToken(token).getPayload().getSubject();
   }
 
+  /**
+   * Extracts the role from the given JWT token.
+   *
+   * @param token the JWT token
+   * @return the role extracted from the token
+   */
   public String getRoleFromToken(String token) {
     return validateToken(token).getPayload().get("role", String.class);
   }

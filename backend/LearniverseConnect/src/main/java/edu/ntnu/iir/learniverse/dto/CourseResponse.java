@@ -1,33 +1,67 @@
 package edu.ntnu.iir.learniverse.dto;
 
 import edu.ntnu.iir.learniverse.entity.Course;
+import edu.ntnu.iir.learniverse.entity.CourseLevel;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
-public class CourseResponse {
-  public final int id;
-  public final String title;
-  public final String description;
-  public final String level;
-  public final String ectsCredits;
-  public final String hoursPerWeek;
-  public final String sessionStartDate;
-  public final String sessionEndDate;
-  public final String relatedCertification;
-  public final int categoryId;
-  public final String categoryName;
-  public final String providerName;
-
+/**
+ * DTO for Course.
+ *
+ * @param id The ID of the course
+ * @param title The title of the course
+ * @param description The description of the course
+ * @param level The level of the course
+ * @param price The price of the course
+ * @param startDate The start date of the course
+ * @param endDate The end date of the course
+ * @param ectsCredits The ECTS credits of the course
+ * @param hoursPerWeek The hours per week of the course
+ * @param relatedCertification The related certification of the course
+ * @param categoryId The ID of the category
+ * @param categoryName The name of the category
+ * @param providerId The ID of the provider
+ * @param providerName The name of the provider
+ */
+public record CourseResponse(
+    Long id,
+    String title,
+    String description,
+    CourseLevel level,
+    BigDecimal price,
+    LocalDate startDate,
+    LocalDate endDate,
+    BigDecimal ectsCredits,
+    BigDecimal hoursPerWeek,
+    String relatedCertification,
+    Long categoryId,
+    String categoryName,
+    Long providerId,
+    String providerName,
+    Boolean isHidden
+) {
+  /**
+   * Constructor for CourseResponse.
+   *
+   * @param course The course entity
+   */
   public CourseResponse(Course course) {
-    this.id = course.getId().intValue();
-    this.title = course.getTitle();
-    this.description = course.getDescription();
-    this.level = course.getLevel().name();
-    this.ectsCredits = course.getEctsCredits() != null ? course.getEctsCredits().toString() : null;
-    this.hoursPerWeek = course.getHoursPerWeek() != null ? course.getHoursPerWeek().toString() : null;
-    this.sessionStartDate = course.getSessionStartDate() != null ? course.getSessionStartDate().toString() : null;
-    this.sessionEndDate = course.getSessionEndDate() != null ? course.getSessionEndDate().toString() : null;
-    this.relatedCertification = course.getRelatedCertification();
-    this.categoryId = course.getCategory().getId().intValue();
-    this.categoryName = course.getCategory().getName();
-    this.providerName = course.getProvider() != null ? course.getProvider().getName() : null;
+    this(
+        course.getId(),
+        course.getTitle(),
+        course.getDescription(),
+        course.getLevel(),
+        course.getPrice(),
+        course.getSessionStartDate(),
+        course.getSessionEndDate(),
+        course.getEctsCredits(),
+        course.getHoursPerWeek(),
+        course.getRelatedCertification(),
+        course.getCategory() != null ? course.getCategory().getId() : null,
+        course.getCategory() != null ? course.getCategory().getName() : null,
+        course.getProvider() != null ? course.getProvider().getId() : null,
+        course.getProvider() != null ? course.getProvider().getName() : null,
+        course.getIsHidden()
+    );
   }
 }

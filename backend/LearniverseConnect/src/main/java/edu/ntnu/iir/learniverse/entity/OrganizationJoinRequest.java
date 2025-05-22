@@ -1,11 +1,21 @@
 package edu.ntnu.iir.learniverse.entity;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import lombok.Getter;
 
+/**
+ * Entity class representing a request to join an organization.
+ */
 @Getter
 @Entity
 @Table(name = "organization_join_requests")
@@ -26,7 +36,6 @@ public class OrganizationJoinRequest {
   private LocalDateTime submittedAt;
 
   @ManyToOne
-  @JsonIgnore
   @JoinColumn(name = "requested_by")
   private User requestedBy;
 }

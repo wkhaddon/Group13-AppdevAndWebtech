@@ -1,15 +1,18 @@
 package edu.ntnu.iir.learniverse.config;
 
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 
-public class EnvInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+/**
+ * Initializer to load environment variables from a .env file into system properties.
+ */
+public class EnvInitializer
+        implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
   @Override
   public void initialize(ConfigurableApplicationContext context) {
